@@ -1,0 +1,26 @@
+Messages Coming From Local Controllers:
+
+   NodeID
+   StateCount *space* timestamp
+   (int)Received Tuples Count
+   .
+   .
+   (int)State Tuples Count
+   .
+   .
+   (int)Sent Tuples Count
+   .
+   .
+
+Now the Local Controller Waits for command:
+
+    1. RESUME - next rule evaluation is done
+    
+    2. CHANGESTATE
+       (int)Tuples to Delete Count
+       .
+       .
+       (int)Tuples to Add Count
+       .
+       .
+       
