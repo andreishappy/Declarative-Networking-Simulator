@@ -1,0 +1,104 @@
+//Declarations
+//========================
+system peers(char[128] node, char[64] relationship);
+input add_neighbour(char [128] to_add);
+persistent neighbour(char[128] neighbour);
+
+persistent candidate(char[128] Dest, char[128] NextHop, char[128] Path);
+persistent best_candidate(char[128] Dest, char[128] Path);
+persistent best_cost(char[128] Dest,int Cost);
+persistent route_updated(char[128] Dest, char[128] NextHop);
+persistent best_next_hop(char[128] Dest,char[128] NextHop);
+
+//Policy additions
+input add_policy(char[128] Dest, char[128] Path, int Pref);
+persistent policy(char[128] Dest, char[128] Path, int Pref);
+persistent best_pref(char[128] Dest, int Pref);
+
+transport advertise(char[128] Dest, char[128] Path);
+transport withdraw(char[128] Dest);
+
+//START TRICK TABLE
+input start(int dummy);
+
+//Rules
+//========================
+policy(D,P,Pref) if add_policy(D,P,Pref);
+policy(D,P,Pref) if prev policy(D,P,Pref);
+
+neighbour(N) if add_neighbour(N);
+neighbour(N) if prev neighbour(N);
+
+block;
+
+route_updated(Dest,NextHop) if
+     advertise(Dest,*)@NextHop;
+route_updated(Dest,NextHop) if
+     withdraw(Dest)@NextHop;
+
+block;
+
+candidate(Dest,NextHop,Path) if
+     advertise(Dest,Path)@NextHop;
+candidate(Dest, NextHop, Path) if 
+     prev candidate(Dest, NextHop, Path),
+     not route_updated(Dest,NextHop);
+
+block;
+
+best_pref(Dest, MAX(Pref)) if
+     candidate(Dest,*,Path),
+     policy(Dest,Path,Pref);
+
+block;
+
+best_cost(Dest, MIN(LENGTH(Path))) if 
+     best_pref(Dest,Pref),
+     candidate(Dest,*,Path),
+     policy(Dest,Path,Pref);
+
+block;          			       	        
+
+best_next_hop(Dest, MIN(NextHop)) if
+     best_pref(Dest,BestPref),
+     best_cost(Dest,BestCost),
+     candidate(Dest,NextHop,Path),
+     policy(Dest,Path,BestPref):
+     LENGTH(Path) == BestCost;
+     
+block;
+best_candidate(Dest,BestPath) if 
+     best_next_hop(Dest, BestNextHop),
+     candidate(Dest, BestNextHop, BestPath);
+
+block;
+advertise(Self,Self)@N if
+     start(*),
+     neighbour(N),
+     peers(Self,"Self");
+
+advertise(Dest,Self+Path)@N if
+     neighbour(N),
+     start(*),
+     peers(Self,"Self"),
+     best_candidate(Dest,Path):
+     LOCATE(N,Path) == 0;
+
+advertise(Dest,Self+Path)@N if
+     best_candidate(Dest,Path),
+     not prev best_candidate(Dest,Path),
+     peers(Self,"Self"),
+     neighbour(N):
+     LOCATE(N,Path) == 0;
+
+withdraw(Dest)@N if
+    prev best_candidate(Dest, *),
+    not candidate(Dest,*,*),
+    peers(N,"Neighbor");
+
+withdraw(Dest)@N if
+    best_candidate(Dest,Path),
+    not prev best_candidate(Dest,Path),
+    peers(Self,"Self"),
+    neighbour(N):
+    LOCATE(N,Path) != 0;

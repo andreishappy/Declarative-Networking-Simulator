@@ -35,5 +35,6 @@ class CentralController(threading.Thread):
             node_id = andreadline(myfile)
             print "Connected to node {0}".format(node_id)
             client_thread = ClientThread(sock,myfile, node_id)
+            client_thread.daemon = True
             client_thread.start()
             self.client_threads.append(client_thread)        

@@ -7,26 +7,28 @@ class LocalController(threading.Thread):
         self.node_id = node_id
         self.state = \
 '''
-3
-add_neighbour(jeff);
-add_neighbour(me);
-add_link(two,2,3.4);
+5
+peers(Self,dute,10020);
+peers(no,way,123123);
+add_neighbour(jeff,12312);
+add_neighbour(me,12312);
+add_link(two,2,12312);
 10
-neighbour(jeff);
-neighbour(me);
-neighbour(joanne);
-candidate(A,AB,3);
-candidate(G,G,3);
-candidate(A,F,3);
-cost(A,F,45);
-cost(B,G,56);
-cost(G,H,100);
-last(straw,20);
+neighbour(jeff,12321);
+neighbour(me,12312);
+neighbour(joanne,12321);
+candidate(A,AB,3,12321);
+candidate(G,G,3,12321);
+candidate(A,F,3,12321);
+cost(A,F,45,12312);
+cost(B,G,56,12321);
+cost(G,H,100,12312);
+last(straw,20,123123);
 4
-advertise(A,B,C);
-advertise(C,B,A);
-construct(yoyoyo);
-construct(ohmygod);
+advertise(n003,n002,C,1002393);
+advertise(n003,n004,C,1992393);
+construct(n004,n003,D,1929392);
+construct(n004,n003,D,1293740);
 '''
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print "Trying to connect to {0}".format((host,port))
@@ -34,8 +36,8 @@ construct(ohmygod);
 
         
     def run(self):
-        for i in range(1,11):
-            mess = 'Node{2}\n{0} time{1}'.format(i,self.state,self.node_id)
+        for i in range(1,4):
+            mess = '{0}\n{1} time {2}'.format(self.node_id,i,self.state)
             print "Sending {0}".format(mess)
             self.s.sendall(mess)
  

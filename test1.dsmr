@@ -1,0 +1,16 @@
+system peers(char[128] instanceID, char [64] topoRelationship);
+input start(int dummy);
+
+transport tran(int msg);
+persistent send_to(char[128] dest);
+persistent sent(int mess, char[128] dest);
+persistent received(int mess, char[128] src);
+
+tran(mess)@P if start(mess), peers(P,"Neighbor");
+
+send_to(P) if prev send_to(P);
+tran(2)@P if send_to(P);
+
+sent(mess,P) if start(mess), peers(P,"Neighbor");
+sent(x,y) if prev sent(x,y);
+received(mess,P) if tran(mess)@P;
