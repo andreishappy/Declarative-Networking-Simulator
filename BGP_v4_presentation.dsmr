@@ -20,7 +20,10 @@ transport withdraw(char[128] Dest);
 
 //START TRICK TABLE
 input start(int dummy);
+persistent started(int dummy);
 
+
+started(X) if start(X);
 //Rules
 //========================
 policy(D,P,Pref) if add_policy(D,P,Pref);

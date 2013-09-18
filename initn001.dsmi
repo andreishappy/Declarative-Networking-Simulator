@@ -1,0 +1,3 @@
+neighbour(n002);
+policy(n004,n002n004,10);
+policy(n004,n002n003n005n004,20);

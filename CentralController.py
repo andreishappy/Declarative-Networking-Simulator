@@ -3,8 +3,10 @@ import threading
 from ClientThread import ClientThread
 from tools import andreadline
 class CentralController(threading.Thread):
-    def __init__(self,port):
+    def __init__(self,port,monitor):
         threading.Thread.__init__(self)
+        #Monitor
+        self.monitor = monitor
 
         #Set up the server socket
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        
@@ -32,9 +34,9 @@ class CentralController(threading.Thread):
         while not self.stopped:
             sock,addr = self.server_socket.accept()
             myfile = sock.makefile(mode='r')
-            node_id = andreadline(myfile)
-            print "Connected to node {0}".format(node_id)
-            client_thread = ClientThread(sock,myfile, node_id)
+            node_id = andreadline(myfile).split('/')[1]
+            print "Central Controller connected to node {0}".format(node_id)
+            client_thread = ClientThread(sock,myfile, node_id,self.monitor)
             client_thread.daemon = True
             client_thread.start()
             self.client_threads.append(client_thread)        

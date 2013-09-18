@@ -47,10 +47,9 @@ class MyXMLParser:
             for key in inp.attrib:
                 input_result[key] = inp.attrib[key]
 
-            if inp.attrib['type'] == 'csv':
-                input_result['rows'] = []
-                for row in inp:
-                    input_result['rows'].append(row.attrib['content']) 
+            input_result['rows'] = []
+            for row in inp:
+                input_result['rows'].append(row.attrib['content']) 
             self.pre_inputs.append(input_result)
 
         for link in topology:

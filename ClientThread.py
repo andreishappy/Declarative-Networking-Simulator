@@ -1,4 +1,4 @@
-import socket
+import socket, time
 import threading
 import string
 from tools import andreadline
@@ -27,7 +27,7 @@ def tuples_to_list(input_list):
     for tup in input_list:
         result.append(tuple_to_list(tup))
     
-    return result`
+    return result
 
 def analyse_messages(raw_list, node_id):
     received = []
@@ -48,8 +48,8 @@ def analyse_messages(raw_list, node_id):
         elif dst == node_id:
             received.append(mess_object)
         else:
-            print "This message should not be here: from {0} to {1} content {2}"\
-                  .format(src,dst,content)
+            print "This message should in {3}'s space: from {0} to {1} content {2}"\
+                  .format(src,dst,content,node_id)
 
     return received, sent
 
@@ -63,10 +63,11 @@ def make_tables(input_list):
         table_name = entry[0]
 
         row = entry[1]
-        try:
-            tables[table_name].append(row)
-        except KeyError:
-            tables[table_name] = [row]
+        #We take out the timestamp
+        if table_name in tables:
+            tables[table_name].append(row[:-1])
+        else:
+            tables[table_name] = [row[:-1]]
 
     return tables
 
@@ -89,13 +90,15 @@ def find_input_tuples(input_list):
 #ACTUAL Client Thread Code
 #=====================================================
 class ClientThread(threading.Thread):
-    def __init__(self,sock,myfile,node_id):
+    def __init__(self,sock,myfile,node_id,monitor):
         threading.Thread.__init__(self)
         self.node_id = node_id
         self.state_list = []
         self.sock = sock
         self.stopped = False
         self.myfile = myfile
+        self.monitor = monitor
+
 
     def stop(self):
         self.stopped = True
@@ -154,9 +157,17 @@ class ClientThread(threading.Thread):
             state_obj = State(self.node_id,state_nr,sent,received,state_tables)
             self.state_list.append(state_obj)
             
-            print "Sending response"
-            self.sock.sendall("RESUME")
+            if first:
+                while not self.monitor.started():
+                    time.sleep(.2)
+
+
+
+            print "Sending RESUME to node {0}".format(self.node_id)
+            self.sock.sendall("RESUME\n")
             
+            if first:
+                self.monitor.resume_sent()
 
             first = False
 
