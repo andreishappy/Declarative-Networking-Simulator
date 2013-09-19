@@ -1,8 +1,12 @@
 //Declarations
 //========================
 system peers(char[128] node, char[64] relationship);
-input add_neighbour(char [128] to_add);
+
+//Topology tables
 persistent neighbour(char[128] neighbour);
+persistent prev_neighbour(char[128] neighbour);
+
+input topology_change(int dummy);
 
 persistent candidate(char[128] Dest, char[128] NextHop, char[128] Path);
 persistent best_candidate(char[128] Dest, char[128] Path);
@@ -22,22 +26,21 @@ transport withdraw(char[128] Dest);
 input start(int dummy);
 persistent started(int dummy);
 
-
-started(X) if start(X);
 //Rules
 //========================
 policy(D,P,Pref) if add_policy(D,P,Pref);
 policy(D,P,Pref) if prev policy(D,P,Pref);
 
-neighbour(N) if add_neighbour(N);
 neighbour(N) if prev neighbour(N);
 
 block;
 
 route_updated(Dest,NextHop) if
-     advertise(Dest,*)@NextHop;
+     advertise(Dest,*)@NextHop,
+     neighbour(NextHop);
 route_updated(Dest,NextHop) if
-     withdraw(Dest)@NextHop;
+     withdraw(Dest)@NextHop,
+     neighbour(NextHop);
 
 block;
 
@@ -45,7 +48,8 @@ candidate(Dest,NextHop,Path) if
      advertise(Dest,Path)@NextHop;
 candidate(Dest, NextHop, Path) if 
      prev candidate(Dest, NextHop, Path),
-     not route_updated(Dest,NextHop);
+     not route_updated(Dest,NextHop),
+     neighbour(NextHop);
 
 block;
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n001" x="240" y="300" rule="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+    <node id="n002" x="629" y="298" rule="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+    <node id="n003" x="438" y="416" rule="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+    <node id="n004" x="450" y="645" rule="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+
+  </nodes>
+
+  <one_rule one_rule="0"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+
+  <pre_inputs>
+    
+    <input instance="n001" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n003,n002n003,20"/>
+      <row content="n003,n003,10"/>
+      <row content="n004,n004,10"/>
+    </input>
+
+    <input instance="n002" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n003,n004n003,20"/>
+      <row content="n003,n003,10"/>
+      <row content="n004,n004,10"/>
+      <row content="n001,n001,10"/>
+    </input>
+
+    <input instance="n003" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+ 
+    </input>
+
+    <input instance="n004" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n003,n001n003,20"/>
+      <row content="n002,n002,10"/>
+      <row content="n003,n003,10"/>
+      <row content="n001,n001,10"/>
+    </input>
+
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="sever_link" link="n001;n002" delay="2" />
+    <input type="repair_link" link="n001;n002" delay="2" />-->
+  </post_inputs>
+
+  <topology>
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n001"/>
+
+    <link node1="n001" node2="n003"/>
+    <link node1="n003" node2="n001"/>
+
+
+    <link node1="n001" node2="n004"/>
+    <link node1="n004" node2="n001"/>
+
+    <link node1="n002" node2="n003"/>
+    <link node1="n003" node2="n002"/>
+
+    <link node1="n002" node2="n004"/>
+    <link node1="n004" node2="n002"/>
+
+    <link node1="n003" node2="n004"/>
+    <link node1="n004" node2="n003"/>
+  </topology>
+
+  <hosts/>
+
+  <limit lim="400"> </limit>
+</doc>

@@ -1,10 +1,29 @@
 from optparse import OptionParser
 from ConfigReader import MyXMLParser
-from SimulationMonitor import SimulationMonitor, DynamicChangeTypeException
-from CentralController import CentralController
+from SimulationMonitor import SimulationMonitor
+from CentralController import CentralController, DynamicChangeTypeException
 from Inserter import Inserter
+from lamport_transformation import lamport_transformation
 import os, time, subprocess
 import tools, socket
+from lxml.etree import *
+from result_to_xml import do_declarations,append_messages_lost,do_states
+
+#HELPER:Removes all messages received that were not from neighbours
+def clean_state(state):
+    neighbours = []
+    n_list_of_lists = state.state_tables['neighbour']
+    for one_neighbour_list in n_list_of_lists:
+        neighbours.append(one_neighbour_list[0])
+    
+    received = state.received
+    index = 0
+    while index < len(received):
+        mess = received[index]
+        if mess.src not in neighbours:
+            del received[index]
+        index += 1
+
 
 class Simulator:
 
@@ -19,32 +38,23 @@ class Simulator:
         self.port = None
 
         self.config = MyXMLParser(config_file)
-        self.one_rule = self.config.one_rule
         #List of all the instances to start
         self.nodes = self.config.nodes
         self.limit = self.config.limit
-        self.rule = self.config.rule
 
         #self.do_table_dicts()
  
-        #List of tables by type
-        if self.one_rule:
-            self.tran_table_dict = tools.get_table_dict(self.rule,'transport')
-            self.pers_table_dict = tools.get_table_dict(self.rule,'persistent')
-        else:
-            print "Can't deal with more than one rule for now"
-
         self.topology = self.config.topology
         self.pre_inputs = self.config.pre_inputs
         self.post_inputs = self.config.post_inputs
 
-        print "Tran table dict\n {0}\n".format(self.tran_table_dict)
-        print "Persistent table dict\n {0}\n".format(self.pers_table_dict)
         print "Pre Inputs\n {0}".format(self.pre_inputs)
         print "Post Inputs\n {0}".format(self.post_inputs)
         print "Topology\n {0}".format(self.topology)
 
         print "Nodes \n {0}".format(self.nodes)
+
+        self.node_to_class = self.config.node_to_class
 
         #Get the simulation monitor ready
         try:
@@ -53,6 +63,9 @@ class Simulator:
             sys.stderr.write("Wrong type for post_input")
             exit(-1)
 
+
+        self.table_templates = self.config.table_templates
+        self.message_templates = self.config.message_templates
 
     def start_engines(self):
         #Make init files for initial topology and any other pre inputs
@@ -125,6 +138,7 @@ class Simulator:
         for ins in inserters:
             ins.join()
         print "All start tuples sent"
+        self.monitor.start_tuples_sent = True
 
     def kill_engines(self):
         cmd = '$PROJECT_HOME/clear_controllable.sh'
@@ -136,7 +150,7 @@ class Simulator:
         started = False
         while not started:
             try:
-                self.central_controller = CentralController(self.port,self.monitor)
+                self.central_controller = CentralController(self.port,self.monitor,self.node_to_class,self.post_inputs)
                 print "Started the CentralController on port {0}".format(self.port)
                 started = True
             except socket.error:
@@ -153,23 +167,108 @@ class Simulator:
     #|<><> MAIN FUNCTION CONTROLS THE SIMULATION ><><>|
     #|================================================|
     def run_simulation(self):
+        start_time = time.time()
         self.start_central_controller()
 
         self.start_engines()
 
-        try:
-            while 1:
-                x = 1
-        except KeyboardInterrupt:
-            print "Hitory is:"
+        while not (self.monitor.hit_limit() or self.monitor.convergence_reached()):
+            time.sleep(1)
 
-
-            history = self.central_controller.stop()
-            for node in history:
-                print "  {0}".format(node)
-                for state in history[node]:
-                    print state
+        if self.monitor.hit_limit():
+            print 'HIT LIMIT'
+            self.outcome = "Hit Limit".format(self.monitor.evaluations)
             
+        else:
+            print "CONVERGENCE REACHED"
+            self.outcome = "Converged"
+
+
+        self.history = self.central_controller.stop()            
+        self.kill_engines()
+        #print "Before Lamport"
+        #self.print_history()
+
+                #Put in all the tables that don't already exist in the history 
+        for node in self.history:
+            clas = self.node_to_class[node]
+            tables = self.table_templates[clas]
+            table_names = []
+            for table in tables:
+                table_names.append(table['name'])
+            state_list = self.history[node]
+            for state in state_list:
+                for table_name in table_names:
+                    if table_name not in state.state_tables:
+                        state.state_tables[table_name] = []
+
+        #Remove all the messages received from nodes that weren't neighbours
+        for node in self.history:
+            state_list = self.history[node]
+            for state in state_list:
+                clean_state(state)
+    
+        self.lost_list, self.nr_received, self.nr_sent = lamport_transformation(self.history)
+        try:
+            self.percentage_lost = float((self.nr_sent - self.nr_received))/self.nr_sent
+        except ZeroDivisionError:
+            self.percentage_lost = 0
+            
+        self.percentage_lost = round(self.percentage_lost * 100,1)
+            #Get this from the monitor
+        self.evaluations = 0
+        self.simulation_time = time.time() - start_time
+        
+        #print "After Lamport"
+        #self.print_history()
+        
+        self.make_xml()
+
+    def make_xml(self):
+        result = Element('result')
+        #Get info about the declarations at the start
+        messages_elem = do_declarations(self.message_templates,'messages')
+        tables_elem = do_declarations(self.table_templates,'tables')
+
+        result.append(messages_elem)
+        result.append(tables_elem)
+
+     
+        messages_lost_elem = Element('messages_lost')
+        messages_lost_elem.attrib['nr_sent'] = str(self.nr_sent)
+        messages_lost_elem.attrib['nr_received'] = str(self.nr_received)
+        messages_lost_elem.attrib['percentage_lost'] = str(self.percentage_lost)
+        append_messages_lost(messages_lost_elem,self.lost_list)
+        result.append(messages_lost_elem)
+
+        outcome_elem = Element('outcome')
+        outcome_elem.attrib['transitions'] = str(self.monitor.evaluations)
+        outcome_elem.attrib['time'] = str(int(self.simulation_time))
+
+        outcome_elem.attrib['outcome'] = self.outcome
+        result.append(outcome_elem)
+        
+
+
+
+        
+
+        states_elem = do_states(self.history)
+        result.append(states_elem)
+
+        f = open(output,'w')
+        res = tostring(result, xml_declaration=True, pretty_print=True)
+        f.write(res)
+        f.close()
+
+
+    def print_history(self):
+        for node in self.history:
+                print "  {0}".format(node)
+                for state in self.history[node]:
+                    print state
+
+
 if __name__ == "__main__":
     #Add DSMEngine to the loadpath
     os.environ['PATH'] += ':/homes/ap3012/individual_project/unzipped22/bin'

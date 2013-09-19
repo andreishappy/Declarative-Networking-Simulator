@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n001" x="-255" y="-44"/>
+    <node id="n002" x="-140" y="-45"/>
+    <node id="n003" x="-51" y="-46"/>
+    <node id="n004" x="56" y="-46"/>
+    <node id="n005" x="-181" y="-118"/>
+    <node id="n006" x="-262" y="72"/>
+    <node id="n007" x="57" y="153"/>
+    <node id="n008" x="222" y="152"/>
+    <node id="n009" x="161" y="66"/>
+    <node id="n010" x="44" y="74"/>
+    <node id="n011" x="-65" y="73"/>
+    <node id="n012" x="-163" y="75"/>
+    <node id="n013" x="-79" y="238"/>
+    <node id="n014" x="60" y="226"/>
+    <node id="n015" x="140" y="226"/>
+<!--<node id="n016" x="10" y="40"/>
+    <node id="n017" x="20" y="40"/>
+    <node id="n018" x="20" y="10"/>
+    <node id="n019" x="30" y="10"/>
+    <node id="n020" x="40" y="10"/>
+    <node id="n021" x="50" y="10"/>
+    <node id="n022" x="10" y="40"/>
+    <node id="n023" x="20" y="40"/>
+    <node id="n024" x="20" y="10"/>
+    <node id="n025" x="30" y="10"/>
+    <node id="n026" x="40" y="10"/>
+    <node id="n027" x="50" y="10"/>
+    <node id="n028" x="10" y="40"/>
+    <node id="n029" x="20" y="40"/>
+    <node id="n030" x="20" y="10"/>
+    <node id="n031" x="30" y="10"/>
+    <node id="n032" x="40" y="10"/>
+
+    <node id="n033" x="20" y="40"/>
+    <node id="n034" x="20" y="10"/>
+    <node id="n035" x="30" y="10"/>
+    <node id="n036" x="40" y="10"/>
+    <node id="n037" x="50" y="10"/>
+    <node id="n038" x="10" y="40"/>
+    <node id="n039" x="20" y="40"/>
+    <node id="n040" x="20" y="10"/>
+    <node id="n041" x="30" y="10"/>
+    <node id="n042" x="40" y="10"/>
+    <node id="n043" x="50" y="10"/>
+    <node id="n044" x="10" y="40"/>
+    <node id="n045" x="20" y="40"/>
+    <node id="n046" x="20" y="10"/>
+    <node id="n047" x="30" y="10"/>
+    <node id="n048" x="40" y="10"/>
+
+    <node id="n049" x="20" y="40"/>
+    <node id="n050" x="20" y="10"/>
+    <node id="n051" x="30" y="10"/>
+    <node id="n052" x="40" y="10"/>
+    <node id="n053" x="50" y="10"/>
+    <node id="n054" x="10" y="40"/>
+    <node id="n055" x="20" y="40"/>
+    <node id="n056" x="20" y="10"/>
+    <node id="n057" x="30" y="10"/>
+    <node id="n058" x="40" y="10"/>
+    <node id="n059" x="50" y="10"/>
+    <node id="n060" x="10" y="40"/>
+    <node id="n061" x="20" y="40"/>
+    <node id="n062" x="20" y="10"/>
+    <node id="n063" x="30" y="10"/>
+    <node id="n064" x="40" y="10"/>
+
+    <node id="n065" x="20" y="40"/>
+    <node id="n066" x="20" y="10"/>
+    <node id="n067" x="30" y="10"/>
+    <node id="n068" x="40" y="10"/>
+    <node id="n069" x="50" y="10"/>
+    <node id="n070" x="10" y="40"/>
+    <node id="n071" x="20" y="40"/>
+    <node id="n072" x="20" y="10"/>
+    <node id="n073" x="30" y="10"/>
+    <node id="n074" x="40" y="10"/>
+    <node id="n075" x="50" y="10"/>
+    <node id="n076" x="10" y="40"/>
+    <node id="n077" x="20" y="40"/>
+    <node id="n078" x="20" y="10"/>
+    <node id="n079" x="30" y="10"/>
+    <node id="n080" x="40" y="10"/>
+
+    <node id="n081" x="20" y="40"/>
+    <node id="n082" x="20" y="10"/>
+    <node id="n083" x="30" y="10"/>
+    <node id="n084" x="40" y="10"/>
+    <node id="n085" x="50" y="10"/>
+    <node id="n086" x="10" y="40"/>
+    <node id="n087" x="20" y="40"/>
+    <node id="n088" x="20" y="10"/>
+    <node id="n089" x="30" y="10"/>
+    <node id="n090" x="40" y="10"/>
+    <node id="n091" x="50" y="10"/>
+    <node id="n092" x="10" y="40"/>
+    <node id="n093" x="20" y="40"/>
+    <node id="n094" x="20" y="10"/>
+    <node id="n095" x="30" y="10"/>
+    <node id="n096" x="40" y="10"/>
+
+    <node id="n097" x="10" y="40"/>
+    <node id="n098" x="20" y="40"/>
+    <node id="n099" x="20" y="10"/>
+    <node id="n100" x="30" y="10"/>
+-->
+
+  </nodes>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v2.dsmr"/>
+
+  <hosts>
+  </hosts>
+
+  <pre_inputs>
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+  
+  <post_inputs/>
+
+  <topology>
+
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n003"/>
+    <link node1="n003" node2="n004"/>
+    <link node1="n004" node2="n005"/>
+    <link node1="n005" node2="n006"/>
+    <link node1="n002" node2="n005"/>
+
+
+    <link node1="n006" node2="n012"/>
+    <link node1="n007" node2="n008"/>
+    <link node1="n008" node2="n009"/>
+    <link node1="n009" node2="n010"/>
+    <link node1="n010" node2="n011"/>
+    <link node1="n011" node2="n012"/>
+
+    <link node1="n007" node2="n013"/>
+    <link node1="n008" node2="n014"/>
+    <link node1="n009" node2="n015"/>
+    <link node1="n014" node2="n013"/>
+    <link node1="n015" node2="n014"/>
+
+  </topology>
+  <limit lim="2000"> </limit>
+</doc>

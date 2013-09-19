@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="edge_1" x="14" y="308" rule="/homes/ap3012/individual_project/home/no_ssh_versions/edges_robots.dsmr"/>
+    <node id="robot_1" x="203" y="304" rule="/homes/ap3012/individual_project/home/no_ssh_versions/mobile_robots.dsmr"/>
+    <node id="robot_2" x="400" y="300" rule="/homes/ap3012/individual_project/home/no_ssh_versions/mobile_robots.dsmr"/>
+    <node id="robot_3" x="600" y="300" rule="/homes/ap3012/individual_project/home/no_ssh_versions/mobile_robots.dsmr"/>
+    <node id="edge_2" x="800" y="300" rule="/homes/ap3012/individual_project/home/no_ssh_versions/edges_robots.dsmr"/>
+
+  </nodes>
+
+  <one_rule one_rule="0"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+
+  <pre_inputs>
+    <input type="normal" instance="robot_1" table_name="location_input" var_name="l" value="70.0"/>
+
+    <input type="normal" instance="robot_2" table_name="location_input" var_name="l" value="90.0"/>
+
+    <input type="normal" instance="robot_3" table_name="location_input" var_name="l" value="120.0"/>
+
+    <input type="normal" instance="edge_1" table_name="location_input" var_name="l" value="0.0"/>
+
+    <input type="normal" instance="edge_2" table_name="location_input" var_name="l" value="200.0"/>
+
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="sever_link" link="n001;n002" delay="2" />
+    <input type="repair_link" link="n001;n002" delay="2" />-->
+  </post_inputs>
+
+  <topology>
+    <link node1="edge_1" node2="robot_1"/>
+    <link node1="robot_1" node2="edge_1"/>
+
+    <link node1="robot_1" node2="robot_2"/>
+    <link node1="robot_2" node2="robot_1"/>
+
+    <link node1="robot_2" node2="robot_3"/>
+    <link node1="robot_3" node2="robot_2"/>
+
+    <link node1="robot_3" node2="edge_2"/>
+    <link node1="edge_2" node2="robot_3"/>
+  </topology>
+
+  <hosts/>
+
+  <limit lim="200"> </limit>
+</doc>

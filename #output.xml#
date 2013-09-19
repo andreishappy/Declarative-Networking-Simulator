@@ -1,0 +1,1307 @@
+<?xml version='1.0' encoding='ASCII'?>
+<result>
+  <messages>
+    <template type="defender.topology_change" name="topology_change" columns="dummy" separator=";"/>
+    <template type="defender.add_policy" name="add_policy" columns="Dest;Path;Pref" separator=";"/>
+    <template type="defender.start" name="start" columns="dummy" separator=";"/>
+    <template type="defender.advertise" name="advertise" columns="Dest;Path" separator=";"/>
+    <template type="defender.withdraw" name="withdraw" columns="Dest" separator=";"/>
+    <template type="attacker.add_me" name="add_me" columns="add" separator=";"/>
+    <template type="attacker.tran" name="tran" columns="mess" separator=";"/>
+  </messages>
+  <tables>
+    <template type="neighbour" name="neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.prev_neighbour" name="prev_neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.candidate" name="candidate" columns="Dest;NextHop;Path" separator=";"/>
+    <template type="defender.best_candidate" name="best_candidate" columns="Dest;Path" separator=";"/>
+    <template type="defender.best_cost" name="best_cost" columns="Dest;Cost" separator=";"/>
+    <template type="defender.route_updated" name="route_updated" columns="Dest;NextHop" separator=";"/>
+    <template type="defender.best_next_hop" name="best_next_hop" columns="Dest;NextHop" separator=";"/>
+    <template type="defender.policy" name="policy" columns="Dest;Path;Pref" separator=";"/>
+    <template type="defender.best_pref" name="best_pref" columns="Dest;Pref" separator=";"/>
+    <template type="defender.started" name="started" columns="dummy" separator=";"/>
+    <template type="attacker.suck_it" name="suck_it" columns="yo;me" separator=";"/>
+  </tables>
+  <messages_lost nr_sent="21" nr_received="19" percentage_lost="9.5">
+    <message from="n004" to="n002" type="defender.advertise" state_nr="1" content="n004;n004"/>
+    <message from="n004" to="n005" type="defender.advertise" state_nr="1" content="n004;n004"/>
+  </messages_lost>
+  <outcome transitions="46" time="36" outcome="Converged"/>
+  <nodes>
+    <node id="n004">
+      <states>
+        <state id="0">
+          <sent/>
+          <received/>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="1">
+          <sent>
+            <message content="n004;n004" type="defender.advertise" unique_id="0" to="n002" will_be_lost="1"/>
+            <message content="n004;n004" type="defender.advertise" unique_id="1" to="n005" will_be_lost="1"/>
+          </sent>
+          <received>
+            <message content="" type="defender.start" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="2">
+          <sent/>
+          <received>
+            <message content="n002;n002" type="defender.advertise" unique_id="6" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n002;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="3">
+          <sent/>
+          <received>
+            <message content="n005;n005" type="defender.advertise" unique_id="2" from="n005"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n005;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="4">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="5" from="n005"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="5">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="None" from="n005"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="6">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="11" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="7">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="8">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="13" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="9">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001;n001;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+      </states>
+    </node>
+    <node id="n005">
+      <states>
+        <state id="0">
+          <sent/>
+          <received/>
+          <content>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="1">
+          <sent>
+            <message content="n005;n005" type="defender.advertise" unique_id="2" to="n004" will_be_lost="0"/>
+            <message content="n005;n005" type="defender.advertise" unique_id="3" to="n003" will_be_lost="0"/>
+          </sent>
+          <received>
+            <message content="" type="defender.start" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="2">
+          <sent>
+            <message content="n004;n005n004" type="defender.advertise" unique_id="4" to="n003" will_be_lost="0"/>
+            <message content="n004" type="defender.withdraw" unique_id="5" to="n004" will_be_lost="0"/>
+          </sent>
+          <received/>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n004"/>
+            </table>
+          </content>
+        </state>
+        <state id="3">
+          <sent/>
+          <received>
+            <message content="n003;n003" type="defender.advertise" unique_id="15" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n003;n003"/>
+            </table>
+          </content>
+        </state>
+        <state id="5">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="18" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n003"/>
+            </table>
+          </content>
+        </state>
+        <state id="6">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="None" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n003"/>
+            </table>
+          </content>
+        </state>
+      </states>
+    </node>
+    <node id="n002">
+      <states>
+        <state id="0">
+          <sent/>
+          <received/>
+          <content>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="1">
+          <sent>
+            <message content="n002;n002" type="defender.advertise" unique_id="6" to="n004" will_be_lost="0"/>
+            <message content="n002;n002" type="defender.advertise" unique_id="7" to="n003" will_be_lost="0"/>
+            <message content="n002;n002" type="defender.advertise" unique_id="8" to="n001" will_be_lost="0"/>
+          </sent>
+          <received>
+            <message content="" type="defender.start" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="2">
+          <sent/>
+          <received>
+            <message content="n001;n001" type="defender.advertise" unique_id="19" from="n001"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n001;n001;n001"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n001;n001"/>
+            </table>
+          </content>
+        </state>
+        <state id="3">
+          <sent>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="9" to="n003" will_be_lost="0"/>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="10" to="n001" will_be_lost="0"/>
+            <message content="n004" type="defender.withdraw" unique_id="11" to="n004" will_be_lost="0"/>
+          </sent>
+          <received/>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n004;n004"/>
+              <row content="n001;n001;n001"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n004"/>
+            </table>
+          </content>
+        </state>
+        <state id="4">
+          <sent/>
+          <received>
+            <message content="n003;n003" type="defender.advertise" unique_id="16" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;4"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+              <row content="n001;n001;n001"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n003;n003"/>
+            </table>
+          </content>
+        </state>
+        <state id="5">
+          <sent>
+            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="12" to="n001" will_be_lost="0"/>
+            <message content="n004" type="defender.withdraw" unique_id="13" to="n004" will_be_lost="0"/>
+            <message content="n004" type="defender.withdraw" unique_id="14" to="n003" will_be_lost="0"/>
+          </sent>
+          <received/>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;12"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n003;n003n005n004"/>
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+              <row content="n001;n001;n001"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n003"/>
+            </table>
+          </content>
+        </state>
+        <state id="6">
+          <sent/>
+          <received>
+            <message content="n004;n003n005n004" type="defender.advertise" unique_id="17" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;12"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n003;n003n005n004"/>
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n003"/>
+            </table>
+          </content>
+        </state>
+        <state id="7">
+          <sent/>
+          <received>
+            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;12"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n003;n003n005n004"/>
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="8">
+          <sent/>
+          <received>
+            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;12"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n003;n003n005n004"/>
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="9">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="20" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;12"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n003;n003n005n004"/>
+              <row content="n003;n003;n003"/>
+              <row content="n004;n004;n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n004"/>
+              <row content="n003"/>
+              <row content="n001"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n003n005n004;20"/>
+              <row content="n004;n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n001"/>
+            </table>
+          </content>
+        </state>
+      </states>
+    </node>
+    <node id="n003">
+      <states>
+        <state id="0">
+          <sent/>
+          <received/>
+          <content>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="1">
+          <sent>
+            <message content="n003;n003" type="defender.advertise" unique_id="15" to="n005" will_be_lost="0"/>
+            <message content="n003;n003" type="defender.advertise" unique_id="16" to="n002" will_be_lost="0"/>
+          </sent>
+          <received>
+            <message content="" type="defender.start" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="2">
+          <sent/>
+          <received>
+            <message content="n002;n002" type="defender.advertise" unique_id="7" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n002;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="3">
+          <sent/>
+          <received>
+            <message content="n005;n005" type="defender.advertise" unique_id="3" from="n005"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n005;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="4">
+          <sent>
+            <message content="n004;n003n005n004" type="defender.advertise" unique_id="17" to="n002" will_be_lost="0"/>
+            <message content="n004" type="defender.withdraw" unique_id="18" to="n005" will_be_lost="0"/>
+          </sent>
+          <received/>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="5">
+          <sent/>
+          <received>
+            <message content="n004;n005n004" type="defender.advertise" unique_id="4" from="n005"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n005"/>
+            </table>
+          </content>
+        </state>
+        <state id="6">
+          <sent/>
+          <received>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="9" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n004"/>
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="7">
+          <sent/>
+          <received>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n004"/>
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="8">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="14" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="9">
+          <sent/>
+          <received>
+            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n005;n005n004"/>
+              <row content="n005;n005;n005"/>
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n005"/>
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n005n004;10"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+      </states>
+    </node>
+    <node id="n001">
+      <states>
+        <state id="0">
+          <sent/>
+          <received/>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+            </table>
+          </content>
+        </state>
+        <state id="1">
+          <sent>
+            <message content="n001;n001" type="defender.advertise" unique_id="19" to="n002" will_be_lost="0"/>
+          </sent>
+          <received>
+            <message content="" type="defender.start" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+            </table>
+          </content>
+        </state>
+        <state id="2">
+          <sent/>
+          <received>
+            <message content="n002;n002" type="defender.advertise" unique_id="8" from="n002"/>
+          </received>
+          <content>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n002;n002;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n002;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="4">
+          <sent/>
+          <received>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="10" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="5">
+          <sent/>
+          <received>
+            <message content="n004;n002n004" type="defender.advertise" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="6">
+          <sent/>
+          <received>
+            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;8"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;10"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+          </content>
+        </state>
+        <state id="7">
+          <sent>
+            <message content="n004" type="defender.withdraw" unique_id="20" to="n002" will_be_lost="0"/>
+          </sent>
+          <received>
+            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="12" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;16"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n003n005n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="8">
+          <sent/>
+          <received>
+            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;16"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n003n005n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+            <table type="defender.route_updated">
+              <row content="n004;n002"/>
+            </table>
+          </content>
+        </state>
+        <state id="9">
+          <sent/>
+          <received>
+            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;16"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n003n005n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+          </content>
+        </state>
+        <state id="10">
+          <sent/>
+          <received>
+            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+          </received>
+          <content>
+            <table type="defender.best_cost">
+              <row content="n004;16"/>
+            </table>
+            <table type="defender.best_candidate">
+              <row content="n004;n002n003n005n004"/>
+            </table>
+            <table type="defender.candidate">
+              <row content="n004;n002;n002n003n005n004"/>
+            </table>
+            <table type="defender.best_pref">
+              <row content="n004;20"/>
+            </table>
+            <table type="neighbour">
+              <row content="n002"/>
+            </table>
+            <table type="defender.best_next_hop">
+              <row content="n004;n002"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004;n002n004;10"/>
+              <row content="n004;n002n003n005n004;20"/>
+              <row content="n004;n004;3000"/>
+            </table>
+          </content>
+        </state>
+      </states>
+    </node>
+  </nodes>
+</result>

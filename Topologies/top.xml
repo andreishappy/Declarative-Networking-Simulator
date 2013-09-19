@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n000" x="441" y="385"/>
+    <node id="n001" x="261" y="220"/>
+    <node id="n002" x="608" y="224"/>
+    <node id="n003" x="264" y="554"/>
+    <node id="n004" x="608" y="557"/>
+  </nodes>
+
+  <one_rule one_rule="1"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v3_policy.dsmr"/>
+
+  <pre_inputs>
+    
+    <input instance="n001" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n000,n002n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <input instance="n002" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n000,n003n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <input instance="n003" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n000,n004n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <input instance="n004" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n000,n001n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="repair_link" link="n004;n000" delay="2"/>-->
+    <!--<input type="sever_link" link="n001;n002" delay="2" />
+    <input type="repair_link" link="n001;n002" delay="2" />-->
+  </post_inputs>
+
+  <topology>
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n001"/>
+
+    <link node1="n002" node2="n004"/>
+    <link node1="n004" node2="n002"/>
+
+    <link node1="n001" node2="n003"/>
+    <link node1="n003" node2="n001"/>
+
+    <link node1="n003" node2="n004"/>
+    <link node1="n004" node2="n003"/>
+
+
+    <link node1="n001" node2="n000"/>
+    <link node1="n000" node2="n001"/>
+
+    <link node1="n002" node2="n000"/>
+    <link node1="n000" node2="n002"/>
+
+    <link node1="n003" node2="n000"/>
+    <link node1="n000" node2="n003"/>
+
+    <link node1="n004" node2="n000"/>
+    <link node1="n000" node2="n004"/>
+
+
+  </topology>
+
+  <hosts/>
+
+  <limit lim="10000"> </limit>
+</doc>

@@ -1,0 +1,4 @@
+input add_me(char[128] add);
+transport tran(char[128] mess);
+
+persistent suck_it (char[128] yo, int me);

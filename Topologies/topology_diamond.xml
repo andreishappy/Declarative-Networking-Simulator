@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n001" x="-44" y="216"/>
+    <node id="n002" x="-45" y="60"/>
+    <node id="n003" x="-32" y="-109"/>
+    <node id="n004" x="169" y="186"/>
+    <node id="n005" x="165" y="-7"/>
+    <node id="n006" x="298" y="89"/>
+    <node id="n007" x="-193" y="167"/>
+    <node id="n008" x="-196" y="-31"/>
+    <node id="n009" x="-312" y="60"/>
+    <node id="n010" x="461" y="88"/>
+
+  </nodes>
+  <one_rule one_rule="1"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+
+  <pre_inputs>
+    
+    <input instance="n001" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n003,n002n003,20"/>
+      <row content="n004,n004,10"/>
+      <row content="n005,n002n005,10"/>
+
+      <row content="n006,n004n006,20"/>
+      <row content="n006,n002n005n006,40"/>
+
+      <row content="n007,n007,40"/>
+      <row content="n007,n002n007,30"/>
+      <row content="n007,n002n008n009n007,10"/>
+      
+      <row content="n008,n002n008,20"/>
+      <row content="n008,n007n009n008,50"/>
+
+      <row content="n009,n007n009,20"/>
+      <row content="n009,n007n002n008n009,20"/>
+
+      <row content="n010,n004n00n006n010,20"/>
+      <row content="n010,n002n003n005n006n010,20"/>
+    </input>
+
+    <input instance="n002" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n001,10"/>
+      <row content="n004,n004,10"/>
+      <row content="n005,n005,10"/>
+      <row content="n003,n003,10"/>
+      <row content="n004,n001n004,20"/>
+
+      <row content="n006,n004n006,20"/>
+      <row content="n006,n005n006,20"/>
+
+      <row content="n007,n007,20"/>
+      <row content="n007,n001n007,30"/>
+      
+      <row content="n008,n008,20"/>
+      <row content="n009,n007n009,20"/>
+      <row content="n009,n008n009,20"/>
+      <row content="n010,n004n006n010,20"/>
+      <row content="n010,n004n005n010,20"/>
+
+    </input>
+
+    <input instance="n003" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n001,n002n001,10"/>
+      <row content="n004,n002n004,10"/>
+      <row content="n005,n002n005,10"/>
+      <row content="n005,n002n001n005,20"/>
+
+      <row content="n006,n005n006,20"/>
+      <row content="n007,n002n007,20"/>
+      <row content="n008,n008,20"/>
+      <row content="n009,n008n009,20"/>
+
+      <row content="n010,n005n006n010,30"/>
+    </input>
+
+    <input instance="n004" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n001,10"/>
+      <row content="n002,n002,10"/>
+      <row content="n003,n002n003,10"/>
+      <row content="n005,n002n005,10"/>
+    </input>
+
+    <input instance="n005" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n002n001,10"/>
+      <row content="n002,n002,10"/>
+      <row content="n003,n003,10"/>
+      <row content="n004,n006n004,10"/>      
+      <row content="n004,n002n004,10"/>
+
+
+      <row content="n006,n006,10"/>
+      <row content="n007,n002n007,10"/>      
+      <row content="n008,n002n008,10"/>      
+      <row content="n009,n003n008n009,10"/>      
+      <row content="n010,n006n010,10"/>      
+    </input>
+
+    <input instance="n006" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n004n001,20"/>
+      <row content="n002,n004n002,20"/>
+      <row content="n003,n005n003,20"/>
+      <row content="n004,n004,20"/>
+      <row content="n005,n005,20"/>
+      <row content="n007,n004n001n007,20"/>
+      <row content="n008,n005n002n008,20"/>
+      <row content="n009,n005n002n008n009,20"/>
+      <row content="n010,n010,20"/>
+    </input>
+
+    <input instance="n007" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n001,20"/>
+      <row content="n002,n002,20"/>
+      <row content="n003,n002n003,20"/>
+      <row content="n004,n002n004,20"/>
+      <row content="n005,n002n005,20"/>
+      <row content="n008,n009n008,20"/>
+      <row content="n009,n009,20"/>
+      <row content="n010,n001n004n006n010,20"/>
+    </input>
+
+    <input instance="n008" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n002n001,20"/>
+      <row content="n002,n002,20"/>
+      <row content="n003,n003,20"/>
+      <row content="n004,n002n004,20"/>
+      <row content="n005,n002n005,20"/>
+      <row content="n006,n002n004n006,20"/>
+      <row content="n007,n009n007,20"/>
+      <row content="n009,n009,20"/>
+      <row content="n010,n007n001n004n006n010,20"/>
+    </input>
+
+    <input instance="n009" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n007n001,20"/>
+      <row content="n002,n007n001,20"/>
+      <row content="n003,n008n003,20"/>
+      <row content="n004,n007n001n004,20"/>
+      <row content="n005,n002n005,20"/>
+      <row content="n006,n007n001n004n006,20"/>
+      <row content="n007,n007,20"/>
+      <row content="n008,n008,20"/>
+      <row content="n010,n007n002n004n006n010,20"/>
+    </input>
+
+    <input instance="n010" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n006n004n001,20"/>
+      <row content="n002,n006n004n001,20"/>
+      <row content="n003,n005n003,20"/>
+      <row content="n004,n006n004,20"/>
+      <row content="n005,n006n005,20"/>
+      <row content="n006,n006,20"/>
+      <row content="n007,n006n004n001n007,20"/>
+      <row content="n008,n006n005n002n008,20"/>
+      <row content="n009,n006n005n003n008n009,20"/>
+    </input>
+
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="sever_link" link="n001;n002" delay="2" />
+    <input type="repair_link" link="n001;n002" delay="2" />-->
+  </post_inputs>
+
+  <topology>
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n001"/>
+
+    <link node1="n002" node2="n003"/>
+    <link node1="n003" node2="n002"/>
+
+    <link node1="n001" node2="n004"/>
+    <link node1="n004" node2="n001"/>
+
+
+    <link node1="n002" node2="n004"/>
+    <link node1="n004" node2="n002"/>
+
+    <link node1="n002" node2="n005"/>
+    <link node1="n005" node2="n002"/>
+
+    <link node1="n003" node2="n005"/>
+    <link node1="n005" node2="n003"/>
+
+    <link node1="n003" node2="n008"/>
+    <link node1="n008" node2="n003"/>
+
+    <link node1="n002" node2="n008"/>
+    <link node1="n008" node2="n002"/>
+
+    <link node1="n002" node2="n007"/>
+    <link node1="n007" node2="n002"/>
+
+    <link node1="n001" node2="n007"/>
+    <link node1="n007" node2="n001"/>
+
+    <link node1="n007" node2="n009"/>
+    <link node1="n009" node2="n007"/>
+
+    <link node1="n008" node2="n009"/>
+    <link node1="n009" node2="n008"/>
+
+    <link node1="n004" node2="n006"/>
+    <link node1="n006" node2="n004"/>
+
+    <link node1="n005" node2="n006"/>
+    <link node1="n006" node2="n005"/>
+
+    <link node1="n006" node2="n010"/>
+    <link node1="n010" node2="n006"/>
+
+  </topology>
+
+  <hosts/>
+
+  <limit lim="600"> </limit>
+</doc>

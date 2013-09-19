@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n001" x="141" y="266"/>
+    <node id="n002" x="344" y="159"/>
+    <node id="n003" x="550" y="276"/>
+    <node id="n004" x="557" y="457"/>
+    <node id="n005" x="358" y="559"/>
+    <node id="n006" x="148" y="455"/>
+  </nodes>
+
+  <one_rule one_rule="1"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/colour.dsmr"/>
+
+  <pre_inputs>
+
+    <input instance="n001" type="normal" table_name="add_colour" var_name="colour" value="blue"/>
+
+    <input instance="n002" type="normal" table_name="add_colour" var_name="colour" value="red"/>
+
+    <input instance="n003" type="normal" table_name="add_colour" var_name="colour" value="blue"/>
+
+    <input instance="n004" type="normal" table_name="add_colour" var_name="colour" value="red"/>
+
+    <input instance="n005" type="normal" table_name="add_colour" var_name="colour" value="blue"/>
+
+    <input instance="n006" type="normal" table_name="add_colour" var_name="colour" value="red"/>
+     
+  </pre_inputs>
+
+  <post_inputs>
+    <input type="sever_link" link="n001;n002" delay="0"/>
+    <input type="sever_link" link="n002;n003" delay="2"/>
+    <input type="repair_link" link="n001;n003" delay="2"/>
+  </post_inputs>
+
+  <topology>
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n001"/>
+
+    <link node1="n002" node2="n003"/>
+    <link node1="n003" node2="n002"/>
+
+    <link node1="n003" node2="n004"/>
+    <link node1="n004" node2="n003"/>
+
+    <link node1="n004" node2="n005"/>
+    <link node1="n005" node2="n004"/>
+
+    <link node1="n005" node2="n006"/>
+    <link node1="n006" node2="n005"/>
+
+    <link node1="n001" node2="n006"/>
+    <link node1="n006" node2="n001"/>
+
+  </topology>
+  <hosts/>
+
+  <limit lim="10000"> </limit>
+</doc>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n000" x="430" y="292" class="defender"/>
+    <node id="n001" x="287" y="413" class="defender"/>
+    <node id="n002" x="293" y="169" class="defender"/>
+    <node id="n003" x="576" y="407" class="defender"/>
+    <node id="n004" x="563" y="175" class="defender"/>
+  </nodes>
+  
+  <classes>
+    <class name="defender" rule="/homes/ap3012/individual_project/home/NewYork/BGP_v4_presentation.dsmr"/>
+
+    <class name="attacker" rule="/homes/ap3012/individual_project/home/NewYork/attacker.dsmr"/>
+  </classes>
+
+  <rule filename="/homes/ap3012/individual_project/home/NewYork/BGP_v4_presentation.dsmr"/>
+
+  <pre_inputs>
+    
+    <input instance="n001" table_name="policy">
+      <row content="n000,n003n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <input instance="n002" table_name="policy">
+      <row content="n000,n001n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+
+    <input instance="n003" table_name="policy">
+      <row content="n000,n004n002n000,20"/>
+      <row content="n000,n000,10"/>
+    </input>
+
+    <input instance="n004" table_name="policy">
+      <row content="n000,n000,20"/>
+      <row content="n000,n002n000,10"/>
+      <row content="n000,n003n000,5"/>
+    </input>
+
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="sever_link" link="n001;n002" delay = "5" />
+    <input type="create_link" link="n001;n002" delay = "10" />
+
+    <input type="add" tuple="policy(n004,n004,3000)" node="n001"
+	   delay="3"/>-->
+
+  </post_inputs>
+
+  <topology>
+   
+
+  <link node1="n001" node2="n002"/>
+  <link node1="n002" node2="n001"/>
+
+  <link node1="n001" node2="n000"/>  
+  <link node1="n000" node2="n001"/>
+
+  <link node1="n001" node2="n003"/>
+  <link node1="n003" node2="n001"/>
+
+  <link node1="n002" node2="n000"/>
+  <link node1="n000" node2="n002"/>
+
+  <link node1="n002" node2="n004"/>
+  <link node1="n004" node2="n002"/>
+
+  <!--<link node1="n004" node2="n000"/>
+  <link node1="n000" node2="n004"/>-->
+
+  <link node1="n004" node2="n003"/>
+  <link node1="n003" node2="n004"/>
+  
+  <link node1="n000" node2="n003"/><link node1="n003" node2="n000"/></topology>
+
+  <hosts/>
+
+  <limit lim="600"> </limit>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <example example="good_bgp"/>
+</doc>

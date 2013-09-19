@@ -1,31 +1,6 @@
 from threading import Lock
+import threading
 import time, datetime
-import string
-class DynamicChangeTypeException(Exception):
-    pass
-
-class DynamicChange:
-    def __init__(self,typ,target,tup,delay):
-        self.type = typ
-        self.target = target
-        first_paren = string.find(tup,'(')
-        self.table_name = tup[:first_paren]
-        self.delay = delay
-
-        tup = tup[first_paren+1:]
-        tup = tup.replace(')','').replace(';','')
-        
-        self.tuple = [x.strip() for x in tup.split(',')]
-
-    def __eq__(self,other):
-        return self.type == other.type and \
-               self.target == other.target and \
-               self.table_name == other.table_name and \
-               self.delay == other.delay
-
-    def __str__(self):
-        return "Dyn type-{0} target-{1} tuple-{2} delay-{3}"\
-               .format(self.type,self.target,self.tuple,self.delay)
 
 #HELPER FUNCTIONS FOR SIMULATION MONITOR
 def matches(short,longer):
@@ -44,7 +19,8 @@ class SimulationMonitor:
     def resume_sent(self):
         with self.resume_lock:
             self.resumes_sent += 1
-
+        if self.resumes_sent == self.to_send:
+            self.start_time = time.time()
 
     def first_resume_sent(self):
         with self.resume_lock:
@@ -58,6 +34,8 @@ class SimulationMonitor:
         self.evaluation_lock = Lock()
         self.last_evaluation = None
         
+        self.start_tuples_sent = False
+
         self.nodes = [x[0] for x in nodes]
         self.all_started = False
         self.starting_lock = Lock()
@@ -66,149 +44,61 @@ class SimulationMonitor:
         self.to_send = len(nodes)
         self.resume_lock = Lock()
 
-
-        self.dynamic_changes_lock = Lock()
-        self.dynamic_changes = {}
+        self.suspended_flags = {}
+        self.suspended_lock = Lock()
+        self.last_state_lock = Lock()
+        self.last_state = {}
+        self.waiting = {}
+        self.waiting_lock = Lock()
         for node in self.nodes:
-            self.dynamic_changes[node] = []
+            self.suspended_flags[node] = False
+            self.last_state[node] = None
+            self.waiting[node] = False
             
-        for inp in post_inputs:
-            typ = inp["type"]
-            if typ == "sever_link" or typ == "create_link":
-                node_list = inp["link"].split(';')
-                node1 = node_list[0]
-                node2 = node_list[1]
-                if typ == "sever_link":
-                    dynamic_type = "delete"
-                else:
-                    dynamic_type = "add"
-                    
-                node1_change = DynamicChange(dynamic_type,node1,"neighbour({0});"\
-                                             .format(node2),int(inp["delay"]))
-                self.dynamic_changes[node1].append(node1_change) 
+    def suspend(self,node_id):
+        with self.suspended_lock:
+            self.suspended_flags[node_id] = True
+            
+    def unsuspend(self,node_id):
+        with self.suspended_lock:
+            self.suspended_flags[node_id] = False
 
-                node2_change = DynamicChange(dynamic_type,node2,"neighbour({0});"\
-                                             .format(node1),int(inp["delay"]))
-                self.dynamic_changes[node2].append(node2_change) 
-
-            elif typ == "add" or typ == "delete":
-                to_add = DynamicChange(typ,inp["node"],inp["tuple"],int(inp["delay"]))
-                self.dynamic_changes[inp["node"]].append(to_add)
-
-            else:
-                raise DynamicChangeTypeException
-
-
-        print "DYNAMIC CHANGES\n"
-        for node in self.dynamic_changes:
-            print "  {0}".format(node)
-            for change in self.dynamic_changes[node]:
-                print "     {0}".format(change)
-        
-
+    def is_suspended(self,node_id):
+        with self.suspended_lock:
+            return self.suspended_flags[node_id]
 
     # Synchronous function which does not return 
     # until both sides of a link have been deleted
-    def send_changes(self,node_id,sock,prev_state):
-        with self.dynamic_changes_lock:
-            dynamic_changes_list = self.dynamic_changes[node_id]
+    def send_changes(self,prev_state,state_nr):
+        thread = threading.current_thread()
+        node_id = thread.node_id
+        if not prev_state:
+            sys.stderr.write('Dynamic change attempted too soon')
+            exit(-1)
 
-        to_delete = []
-        to_add = []
-        wait_for = []
+        with self.last_state_lock:
+            self.last_state[node_id] = prev_state
 
-        #current_delay = time.time() - self.start(time)
+        with self.suspended_lock:
+            suspended = self.suspended_flags[node_id]
 
-        to_send = 'CHANGESTATE\n'
-        
-        for dynamic_change in dynamic_changes_list:
-            #if dynamic_change.delay > current_delay:
-            #    continue
+        self.waiting_lock.acquire()
+        if suspended:
 
-            if dynamic_change.type == 'add':
-                to_add.append(dynamic_change)
-            elif dynamic_change.type == 'delete':
-                to_delete.append(dynamic_change)
+            self.waiting[thread.node_id] = True
 
-            #CHANGE THIS TO PEERS LATER
-            if dynamic_change.table_name == "neighbour":
+        while suspended:
+            self.waiting_lock.release()
+            time.sleep(.2)
+            self.waiting_lock.acquire()
+            with self.suspended_lock:
+                suspended = self.suspended_flags[node_id]
 
-                other_node = dynamic_change.tuple[0]
-                dyn = DynamicChange(dynamic_change.type,\
-                                    other_node,\
-                                    'neighbour({0});'.format(node_id),\
-                                    dynamic_change.delay)
+        self.waiting[node_id] = False 
+        self.waiting_lock.release()
 
-                wait_for.append(dyn)
-                print "Added to wait_for: {0}".format(dyn)
-
-        delete_count = 0
-        to_write = []
-        for change in to_delete:
-            table_name = change.table_name
-            row_list = change.tuple
-            
-            #Now find the timestamp from the previous state if it exists 
-            relevant_table = prev_state[table_name]
-            for state_row in relevant_table:
-                if matches(row_list,state_row):
-                    new_row_list = row_list + [longstamp(state_row[-1])]
-                    delete_count += 1
-                    line = "{0}({1});".format(table_name,','.join(row_list))
-                    to_write.append(line)
-
-                else:
-                    continue
-
-        to_send += '{0}\n'.format(delete_count)
-        for write in to_write:
-            to_send += '{0}\n'.format(write)
-
-        add_count = len(to_add)
-        to_send += '{0}\n'.format(add_count)
-        for change in to_add:
-            table_name= change.table_name
-            row_list = change.tuple
-            new_row_list = row_list + ['100']
-            to_send+='{0}({1});\n'.format(table_name,','.join(new_row_list))
-        
-        print to_send
-        #sock.sendall(to_send)
-        self.remove_from_changes(to_add,to_delete)
-        self.wait_for_others(wait_for)
+        print "++++Free {0}".format(node_id)
        
-    #IMPLEMENTATION THAT DELETES THE DYNAMIC CHANGES AFTER THEY HAVE BEEN DONE
-    def remove_from_changes(self,to_add,to_delete):
-        return
-
-    #Implement
-    def wait_for_others(self,wait_for):
-        for change in wait_for:
-            print "IN WAIT FOR\n {0}".format(change)
-
-            #<><><><><><>                      NEXT              <><><><><><><>>#
-            #CHANGE THIS TO A WHILE AND RELOAD THE LIST AT A CERTAIN INTERVAL   #
-            #                                                                   #
-            #with self.dynamic_changes_lock:                                    #
-            #   other_node_list = self.dynamic_changes[change.target]           #
-            #while change in other_node_list:                                   #
-            #   time.sleep(.2)                                                  #
-            #   with self.dynamic_changes_lock:                                 #
-            #        other_node_list = self.dynamic_changes[change.target]      #
-            #                                                                   #
-            #CHECK FOR THREAD SAFETY AND IF THE LIST CHANGES COZ IT'S A POINTER #
-            #####################################################################
-
-            with self.dynamic_changes_lock:
-                other_node_list = self.dynamic_changes[change.target]
-
-                for elem in other_node_list:
-                    print "In other node list {0}".format(elem)
-                    if change == elem:
-                        print "FOUND"
-                if change in other_node_list:
-                    print "Found {0}".format(change)
-
     def signal_start(self):
         with self.starting_lock:
             self.started += 1
@@ -216,13 +106,18 @@ class SimulationMonitor:
     def all_started_signal(self):
         with self.starting_lock:
             self.all_started = True
-            self.start_time = time.time()
+
 
     def started(self):
-        return self.all_started
+        with self.starting_lock:
+            res = self.all_started
+        return res
 
     def signal_evaluation(self):
         evaluation_time = time.time()
+        thread = threading.current_thread()
+        node_id = thread.node_id
+
         with self.evaluation_lock:
             self.evaluations += 1
             self.last_evaluation = evaluation_time
@@ -233,7 +128,10 @@ class SimulationMonitor:
     def hit_limit(self):
         return self.evaluations >= self.limit
     
-   
+    def ready_for_change(self,node_id):
+        with self.waiting_lock:
+            result = self.waiting[node_id]
+        return result
 
 if __name__ == "__main__":
     #Test for send_changes message content

@@ -1,8 +1,13 @@
 import string
-
+class ClosedSocketException(Exception):
+    pass
 #Reads the next line and take out the newline at the end 
 def andreadline(stream):
-    return stream.readline()[:-1]
+    result = stream.readline()
+    if not result:
+        raise ClosedSocketException
+
+    return result[:-1]
 
 
 def remove_starting_white_space(st):

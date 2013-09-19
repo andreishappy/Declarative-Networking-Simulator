@@ -1,0 +1,58 @@
+//Topology and Policy Preferences
+b1 neighbour(Peer) if inputNeighbour(Peer).
+b2 neighbour(Peer) if prev neighbour(Peer).
+b3 policy(Dest, Path, Pref) if inputPolicy(Dest, Path, Pref).
+b4 policy(Dest, Path, Pref) if prev policy(Dest, Path, Pref).
+
+//Calculating Best Route
+b5 hasRoute(Dest) if candidate(Dest, NextHop, Path).
+
+b6 bestLocalPref(Dest, max<LocalPref>) if hasRoute(Dest),
+   		       		       	  candidate(Dest, NextHop, Path),
+					  policy(Dest, Path, LocalPref).
+
+b7 bestCost(Dest, min<Cost>) if bestLocalPref(Dest, BestLocalPref),
+   		  	     	candidate(Dest, NextHop, Path),
+				policy(Dest, Path, BestLocalPref),
+				Cost := f_length(Path).
+
+b8 bestNextHop(Dest, min<NextHop>) if bestLocalPref(Dest, BestLocalPref),
+   		     		      bestCost(Dest, BestCost),
+				      candidate(Dest, NextHop, Path),
+				      policy(Dest, Path, BestLocalPref),
+				      f_length(Path) == BestCost.
+
+b9 bestPath(Dest, BestPath) if bestNextHop(Dest, BestNextHop),
+   		  	       candidate(Dest, BestNextHop, BestPath).
+
+//Populating the candidate table
+b10 routeUpdated(Dest, NextHop) if update(Dest, Path)@NextHop.
+
+b11 routeUpdated(Dest, NextHop) if withdraw(Dest)@NextHop.
+
+b12 candidate(Dest, NextHop, Path) if prev candidate(Dest, NextHop, Path),
+    		    	     	      not routeUpdated(Dest, NextHop).
+
+b13 candidate(Dest, NextHop, Path) if update(Dest, Path)@NextHop,
+    		    	     	      policy(Dest, Path, LocalPref).
+
+//Conditions for Sending Messages
+b14 update(Self, Self_id)@Peer if input_neighbour(Peer).
+
+b15 update(Dest, NewPath)@Peer if bestRoute(Dest, Path),
+    		 	       	  not prev bestRoute(Dest, Path),	  		  
+				  application_id(Self),
+				  NewPath := f_append(Self, Path),
+				  neighbour(Peer),
+				  f_member(Peer, NewPath) == 0.
+
+b16 withdraw(Dest)@Peer if prev best_route(Dest, OldPath),
+    			   not has_route(Dest),
+			   neighbour(Peer).
+
+b17 withdraw(Dest)@Peer if best_route(Dest, Path),
+    			   not prev best_route(Dest, Path),
+			   application_id(Self),
+			   NewPath := @append(Self, Path),
+			   neighbour(Peer),
+			   f_member(Peer, NewPath) == 1.

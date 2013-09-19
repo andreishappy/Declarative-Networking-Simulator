@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+  <nodes>
+
+    <node id="n001" x="100" y="258"/>
+    <node id="n002" x="380" y="300"/>
+    <node id="n003" x="645" y="274"/>
+    <node id="n004" x="288" y="561"/>
+    <node id="n005" x="510" y="562"/>
+
+  <node id="n006" x="273" y="106"/><node id="n007" x="273" y="106"/><node id="n008" x="273" y="106"/><node id="n009" x="273" y="106"/><node id="n010" x="489" y="105"/></nodes>
+
+  <one_rule one_rule="1"/>
+
+  <rule filename="/homes/ap3012/individual_project/home/no_ssh_versions/BGP_v4_presentation.dsmr"/>
+
+  <pre_inputs>
+    
+    <input instance="n001" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n003,n002n003,20"/>
+      <row content="n004,n004,10"/>
+      <row content="n005,n002n005,10"/>
+    </input>
+
+    <input instance="n002" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n001,10"/>
+      <row content="n004,n004,10"/>
+      <row content="n005,n005,10"/>
+      <row content="n003,n003,10"/>
+      <row content="n004,n001n004,20"/>
+    </input>
+
+    <input instance="n003" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n001,n002n001,10"/>
+      <row content="n004,n002n004,10"/>
+      <row content="n005,n002n005,10"/>
+      <row content="n005,n002n001n005,20"/>
+    </input>
+
+    <input instance="n004" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n001,n001,10"/>
+      <row content="n002,n002,10"/>
+      <row content="n003,n002n003,10"/>
+      <row content="n005,n002n005,10"/>
+    </input>
+
+    <input instance="n005" type="csv" table_name="add_policy" var_names="Dest,Path,Pref">
+      <row content="n002,n002,10"/>
+      <row content="n001,n002n001,10"/>
+      <row content="n004,n002n004,10"/>
+      <row content="n005,n002n005,10"/>
+      <row content="n005,n002n001n005,20"/>
+    </input>
+
+    <!-- types: csv or normal     -->
+    <!--<input instance="n001" type="normal" table_name="start"
+	   var_names="payload_int;payload_string" values="3;hello" />
+    <input instance="n001" type="csv" table_name="start" csv_file="csv_attempt"/>-->
+  </pre_inputs>
+
+  <post_inputs>
+    <!--<input type="sever_link" link="n001;n002" delay="2" />
+    <input type="repair_link" link="n001;n002" delay="2" />-->
+  </post_inputs>
+
+  <topology>
+    <link node1="n001" node2="n002"/>
+    <link node1="n002" node2="n001"/>
+
+    <link node1="n002" node2="n003"/>
+    <link node1="n003" node2="n002"/>
+
+    <link node1="n001" node2="n004"/>
+    <link node1="n004" node2="n001"/>
+
+
+    <link node1="n002" node2="n004"/>
+    <link node1="n004" node2="n002"/>
+
+    <link node1="n002" node2="n005"/>
+    <link node1="n005" node2="n002"/>
+  <link node1="n006" node2="n001"/><link node1="n001" node2="n006"/><link node1="n010" node2="n003"/><link node1="n003" node2="n010"/><link node1="n006" node2="n010"/><link node1="n010" node2="n006"/></topology>
+
+  <hosts/>
+
+  <limit lim="200"> </limit>
+</doc>
