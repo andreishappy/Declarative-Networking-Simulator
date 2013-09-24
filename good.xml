@@ -20,7 +20,7 @@
   <pre_inputs>
     
     <input instance="n001" table_name="cadd_policy">
-      <row content="n003n004n002n005,20"/>
+      <row content="n003n005,20"/>
       <row content="n005,10"/>
     </input>
 
@@ -48,7 +48,7 @@
   </pre_inputs>
 
   <post_inputs>
-    <input type="sever_link" link="n004;n005" delay = "5" />
+    <!--<input type="sever_link" link="n001;n005" delay = "5" />-->
     <!--<input type="create_link" link="n001;n002" delay = "15" />-->
 
     <!--<input type="add" tuple="policy(n004,n004,3000)" node="n001"
@@ -84,7 +84,7 @@
 
   <hosts/>
 
-  <limit lim="200"> </limit>
+  <limit lim="600"> </limit>
 
 
 
@@ -118,4 +118,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <example example="good_bgp"/>
 </doc>

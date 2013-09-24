@@ -1,6 +1,7 @@
 from threading import Lock
 import threading
 import time, datetime
+import sys
 
 #HELPER FUNCTIONS FOR SIMULATION MONITOR
 def matches(short,longer):
@@ -13,6 +14,7 @@ def longstamp(date_string):
     timestamp = datetime.datetime.strptime(date_string,'%Y-%m-%d %H:%M:%S.%f')
     timestamp = int(float(timestamp.strftime('%s.%f'))*1000)
     return str(timestamp)
+
 
 class SimulationMonitor:
 
@@ -54,7 +56,11 @@ class SimulationMonitor:
             self.suspended_flags[node] = False
             self.last_state[node] = None
             self.waiting[node] = False
-            
+        
+
+        self.pending_lock = Lock()
+        self.pending_dict = {}
+        
     def suspend(self,node_id):
         with self.suspended_lock:
             self.suspended_flags[node_id] = True
@@ -79,9 +85,8 @@ class SimulationMonitor:
         with self.last_state_lock:
             self.last_state[node_id] = prev_state
 
-        with self.suspended_lock:
-            suspended = self.suspended_flags[node_id]
-
+        suspended = self.suspended_flags[node_id]
+        self.suspended_lock.release()
         self.waiting_lock.acquire()
         if suspended:
 
@@ -113,7 +118,26 @@ class SimulationMonitor:
             res = self.all_started
         return res
 
-    def signal_evaluation(self):
+#WORKING HERE===================================
+    #Keeping a dict of the form:
+    #   {<hashed_mess>, (bool(sent),bool(received))}
+    def signal_evaluation(self,received,sent):
+        for mess in received:
+            hashed = hash(mess)
+            with self.pending_lock:
+                if hashed in self.pending_dict:
+                    self.pending_dict[hashed] = (True,True)
+                else:
+                    self.pending_dict[hashed] = (False,True)
+
+        for mess in sent:
+            hashed = hash(mess)
+            with self.pending_lock:
+                if hashed in self.pending_dict:
+                    self.pending_dict[hashed] = (True,True)
+                else:
+                    self.pending_dict[hashed] = (True,False)
+
         evaluation_time = time.time()
         thread = threading.current_thread()
         node_id = thread.node_id
@@ -123,8 +147,20 @@ class SimulationMonitor:
             self.last_evaluation = evaluation_time
 
     def convergence_reached(self):
-        return time.time() - self.last_evaluation >= 15
+        for mess in self.pending_dict:
+            (sent,received) = self.pending_dict[mess]
+            if not (sent and received):
+                return False
+        return True
+
+
         
+        #Time check
+        #return time.time() - self.last_evaluation >= 10
+        '''If the messages are correct use the following:
+        with self.pending_lock:
+            return self.pending == 0
+        '''
     def hit_limit(self):
         return self.evaluations >= self.limit
     

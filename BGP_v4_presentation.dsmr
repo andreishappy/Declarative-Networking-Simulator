@@ -7,6 +7,7 @@ persistent neighbour(char[128] neighbour);
 persistent prev_neighbour(char[128] neighbour);
 
 input topology_change(int dummy);
+input link_added(char[128] added);
 
 persistent candidate(char[128] Dest, char[128] NextHop, char[128] Path);
 persistent best_candidate(char[128] Dest, char[128] Path);
@@ -81,6 +82,11 @@ best_candidate(Dest,BestPath) if
 block;
 advertise(Self,Self)@N if
      start(*),
+     neighbour(N),
+     peers(Self,"Self");
+
+advertise(Self,Self)@N if
+     link_added(N),
      neighbour(N),
      peers(Self,"Self");
 

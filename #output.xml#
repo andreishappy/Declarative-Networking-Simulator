@@ -1,32 +1,35 @@
 <?xml version='1.0' encoding='ASCII'?>
 <result>
   <messages>
-    <template type="defender.topology_change" name="topology_change" columns="dummy" separator=";"/>
-    <template type="defender.add_policy" name="add_policy" columns="Dest;Path;Pref" separator=";"/>
     <template type="defender.start" name="start" columns="dummy" separator=";"/>
-    <template type="defender.advertise" name="advertise" columns="Dest;Path" separator=";"/>
+    <template type="defender.add_neighbour" name="add_neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.del_neighbour" name="del_neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.topology_change" name="topology_change" columns="dummy" separator=";"/>
+    <template type="defender.add_policy" name="add_policy" columns="path;pref" separator=";"/>
+    <template type="defender.del_policy" name="del_policy" columns="path" separator=";"/>
+    <template type="defender.advert" name="advert" columns="Dest;Path" separator=";"/>
     <template type="defender.withdraw" name="withdraw" columns="Dest" separator=";"/>
     <template type="attacker.add_me" name="add_me" columns="add" separator=";"/>
     <template type="attacker.tran" name="tran" columns="mess" separator=";"/>
   </messages>
   <tables>
+    <template type="defender.cdel_neighbour" name="cdel_neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.cadd_neighbour" name="cadd_neighbour" columns="neighbour" separator=";"/>
+    <template type="defender.cadd_policy" name="cadd_policy" columns="path;pref" separator=";"/>
+    <template type="defender.cdel_policy" name="cdel_policy" columns="path" separator=";"/>
     <template type="neighbour" name="neighbour" columns="neighbour" separator=";"/>
-    <template type="defender.prev_neighbour" name="prev_neighbour" columns="neighbour" separator=";"/>
-    <template type="defender.candidate" name="candidate" columns="Dest;NextHop;Path" separator=";"/>
-    <template type="defender.best_candidate" name="best_candidate" columns="Dest;Path" separator=";"/>
-    <template type="defender.best_cost" name="best_cost" columns="Dest;Cost" separator=";"/>
-    <template type="defender.route_updated" name="route_updated" columns="Dest;NextHop" separator=";"/>
+    <template type="defender.policy" name="policy" columns="Dest;Pref" separator=";"/>
+    <template type="defender.rib_in_changed" name="rib_in_changed" columns="Dest;NextHop" separator=";"/>
+    <template type="defender.rib_in" name="rib_in" columns="Dest;NextHop;Path" separator=";"/>
+    <template type="defender.best_local_pref" name="best_local_pref" columns="Dest;LocalPref" separator=";"/>
+    <template type="defender.best_cost" name="best_cost" columns="Dest;Path" separator=";"/>
     <template type="defender.best_next_hop" name="best_next_hop" columns="Dest;NextHop" separator=";"/>
-    <template type="defender.policy" name="policy" columns="Dest;Path;Pref" separator=";"/>
-    <template type="defender.best_pref" name="best_pref" columns="Dest;Pref" separator=";"/>
-    <template type="defender.started" name="started" columns="dummy" separator=";"/>
+    <template type="defender.rib_selected" name="rib_selected" columns="Dest;NextHop;Path" separator=";"/>
+    <template type="defender.deleted" name="deleted" columns="deleted" separator=";"/>
     <template type="attacker.suck_it" name="suck_it" columns="yo;me" separator=";"/>
   </tables>
-  <messages_lost nr_sent="21" nr_received="19" percentage_lost="9.5">
-    <message from="n004" to="n002" type="defender.advertise" state_nr="1" content="n004;n004"/>
-    <message from="n004" to="n005" type="defender.advertise" state_nr="1" content="n004;n004"/>
-  </messages_lost>
-  <outcome transitions="46" time="36" outcome="Converged"/>
+  <messages_lost nr_sent="37" nr_received="37" percentage_lost="0.0"/>
+  <outcome transitions="68" time="43" outcome="Converged"/>
   <nodes>
     <node id="n004">
       <states>
@@ -34,205 +37,506 @@
           <sent/>
           <received/>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="1">
           <sent>
-            <message content="n004;n004" type="defender.advertise" unique_id="0" to="n002" will_be_lost="1"/>
-            <message content="n004;n004" type="defender.advertise" unique_id="1" to="n005" will_be_lost="1"/>
+            <message content="n004;n004" type="defender.advert" unique_id="0" to="n002" will_be_lost="0"/>
+            <message content="n004;n004" type="defender.advert" unique_id="1" to="n005" will_be_lost="0"/>
+            <message content="n004;n004" type="defender.advert" unique_id="2" to="n003" will_be_lost="0"/>
           </sent>
           <received>
             <message content="" type="defender.start" unique_id="None" from="admin"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n001;n001;10"/>
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="2">
           <sent/>
           <received>
-            <message content="n002;n002" type="defender.advertise" unique_id="6" from="n002"/>
+            <message content="n002;n002" type="defender.advert" unique_id="12" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n002;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n001;n001;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n002;n002"/>
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="3">
           <sent/>
           <received>
-            <message content="n005;n005" type="defender.advertise" unique_id="2" from="n005"/>
+            <message content="n003;n003" type="defender.advert" unique_id="23" from="n003"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n003;n003"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n001;n001;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n005;n005"/>
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="4">
-          <sent/>
+          <sent>
+            <message content="n005;n004n005" type="defender.advert" unique_id="3" to="n002" will_be_lost="0"/>
+            <message content="n005;n004n005" type="defender.advert" unique_id="4" to="n003" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="5" to="n005" will_be_lost="0"/>
+          </sent>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="5" from="n005"/>
+            <message content="n005;n005" type="defender.advert" unique_id="8" from="n005"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n005"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="5">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="None" from="n005"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="26" from="n003"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n005"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="6">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="11" from="n002"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="None" from="n003"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="7">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="14" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+              <row content="n005;n002;n002n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="8">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="13" from="n002"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="None" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+              <row content="n005;n002;n002n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
         <state id="9">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+            <message content="n005;n002n001n005" type="defender.advert" unique_id="16" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
               <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
+            <table type="defender.rib_selected">
               <row content="n005;n005;n005"/>
             </table>
-            <table type="defender.policy">
-              <row content="n001;n001;10"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
+            </table>
+          </content>
+        </state>
+        <state id="10">
+          <sent/>
+          <received>
+            <message content="n005;n002n001n005" type="defender.advert" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
+            </table>
+          </content>
+        </state>
+        <state id="11">
+          <sent/>
+          <received>
+            <message content="n005;n002n005" type="defender.advert" unique_id="20" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+              <row content="n005;n002;n002n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
+            </table>
+          </content>
+        </state>
+        <state id="12">
+          <sent/>
+          <received>
+            <message content="n005;n002n005" type="defender.advert" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+              <row content="n005;n002;n002n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n005;20"/>
+              <row content="n002n005;10"/>
+              <row content="n003n005;5"/>
             </table>
           </content>
         </state>
@@ -244,167 +548,559 @@
           <sent/>
           <received/>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="1">
           <sent>
-            <message content="n005;n005" type="defender.advertise" unique_id="2" to="n004" will_be_lost="0"/>
-            <message content="n005;n005" type="defender.advertise" unique_id="3" to="n003" will_be_lost="0"/>
+            <message content="n005;n005" type="defender.advert" unique_id="6" to="n001" will_be_lost="0"/>
+            <message content="n005;n005" type="defender.advert" unique_id="7" to="n002" will_be_lost="0"/>
+            <message content="n005;n005" type="defender.advert" unique_id="8" to="n004" will_be_lost="0"/>
+            <message content="n005;n005" type="defender.advert" unique_id="9" to="n003" will_be_lost="0"/>
           </sent>
           <received>
             <message content="" type="defender.start" unique_id="None" from="admin"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="2">
-          <sent>
-            <message content="n004;n005n004" type="defender.advertise" unique_id="4" to="n003" will_be_lost="0"/>
-            <message content="n004" type="defender.withdraw" unique_id="5" to="n004" will_be_lost="0"/>
-          </sent>
-          <received/>
+          <sent/>
+          <received>
+            <message content="n004;n004" type="defender.advert" unique_id="1" from="n004"/>
+          </received>
           <content>
-            <table type="defender.best_cost">
-              <row content="n004;4"/>
-            </table>
-            <table type="defender.best_candidate">
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
               <row content="n004;n004"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n004;n004"/>
-            </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
-            </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n004"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="3">
           <sent/>
           <received>
-            <message content="n003;n003" type="defender.advertise" unique_id="15" from="n003"/>
+            <message content="n002;n002" type="defender.advert" unique_id="11" from="n002"/>
           </received>
           <content>
-            <table type="defender.best_cost">
-              <row content="n004;4"/>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n002;n002"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n004"/>
-            </table>
-            <table type="defender.candidate">
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
-            </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="4">
+          <sent/>
+          <received>
+            <message content="n001;n001" type="defender.advert" unique_id="29" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n001;n001"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n003;n003"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="5">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="18" from="n003"/>
+            <message content="n003;n003" type="defender.advert" unique_id="24" from="n003"/>
           </received>
           <content>
-            <table type="defender.best_cost">
-              <row content="n004;4"/>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n003;n003"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n004"/>
-            </table>
-            <table type="defender.candidate">
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
-            </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
-            </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n003"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="6">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="None" from="n003"/>
+            <message content="n005" type="defender.withdraw" unique_id="27" from="n003"/>
           </received>
           <content>
-            <table type="defender.best_cost">
-              <row content="n004;4"/>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n004"/>
-            </table>
-            <table type="defender.candidate">
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
-            </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
               <row content="n004"/>
               <row content="n003"/>
             </table>
-            <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="7">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n004;10"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n003"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="8">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="33" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
             </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="9">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="10">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="5" from="n004"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="11">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="15" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="12">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n004"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="13">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="14">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="35" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="15">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="16">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="18" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="17">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="18">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="21" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
+          </content>
+        </state>
+        <state id="19">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n002"/>
+              <row content="n004"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
       </states>
@@ -415,314 +1111,413 @@
           <sent/>
           <received/>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy">
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="1">
           <sent>
-            <message content="n002;n002" type="defender.advertise" unique_id="6" to="n004" will_be_lost="0"/>
-            <message content="n002;n002" type="defender.advertise" unique_id="7" to="n003" will_be_lost="0"/>
-            <message content="n002;n002" type="defender.advertise" unique_id="8" to="n001" will_be_lost="0"/>
+            <message content="n002;n002" type="defender.advert" unique_id="10" to="n001" will_be_lost="0"/>
+            <message content="n002;n002" type="defender.advert" unique_id="11" to="n005" will_be_lost="0"/>
+            <message content="n002;n002" type="defender.advert" unique_id="12" to="n004" will_be_lost="0"/>
           </sent>
           <received>
             <message content="" type="defender.start" unique_id="None" from="admin"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="2">
           <sent/>
           <received>
-            <message content="n001;n001" type="defender.advertise" unique_id="19" from="n001"/>
+            <message content="n001;n001" type="defender.advert" unique_id="28" from="n001"/>
           </received>
           <content>
-            <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
-              <row content="n001"/>
-            </table>
-            <table type="defender.candidate">
-              <row content="n001;n001;n001"/>
-            </table>
-            <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
               <row content="n001;n001"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy">
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="3">
-          <sent>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="9" to="n003" will_be_lost="0"/>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="10" to="n001" will_be_lost="0"/>
-            <message content="n004" type="defender.withdraw" unique_id="11" to="n004" will_be_lost="0"/>
-          </sent>
-          <received/>
+          <sent/>
+          <received>
+            <message content="n004;n004" type="defender.advert" unique_id="0" from="n004"/>
+          </received>
           <content>
-            <table type="defender.best_cost">
-              <row content="n004;4"/>
-            </table>
-            <table type="defender.best_candidate">
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
               <row content="n004;n004"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n004;n004"/>
-              <row content="n001;n001;n001"/>
-            </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
-            <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n004"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="4">
-          <sent/>
+          <sent>
+            <message content="n005;n002n005" type="defender.advert" unique_id="13" to="n001" will_be_lost="0"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="14" to="n004" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="15" to="n005" will_be_lost="0"/>
+          </sent>
           <received>
-            <message content="n003;n003" type="defender.advertise" unique_id="16" from="n003"/>
+            <message content="n005;n005" type="defender.advert" unique_id="7" from="n005"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;4"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
-              <row content="n001;n001;n001"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n004"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n003;n003"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="5">
           <sent>
-            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="12" to="n001" will_be_lost="0"/>
-            <message content="n004" type="defender.withdraw" unique_id="13" to="n004" will_be_lost="0"/>
-            <message content="n004" type="defender.withdraw" unique_id="14" to="n003" will_be_lost="0"/>
+            <message content="n005;n002n001n005" type="defender.advert" unique_id="16" to="n004" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="17" to="n001" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="18" to="n005" will_be_lost="0"/>
           </sent>
-          <received/>
+          <received>
+            <message content="n005;n001n005" type="defender.advert" unique_id="31" from="n001"/>
+          </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;12"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n003;n003n005n004"/>
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
-              <row content="n001;n001;n001"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n001;n001n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n001;n001n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n003"/>
+              <row content="n005;n001"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n003"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="6">
           <sent/>
           <received>
-            <message content="n004;n003n005n004" type="defender.advertise" unique_id="17" from="n003"/>
+            <message content="n005;n001n005" type="defender.advert" unique_id="None" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;12"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n003;n003n005n004"/>
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n001;n001n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n005"/>
               <row content="n004"/>
-              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n001;n001n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n003"/>
+              <row content="n005;n001"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n003"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="7">
           <sent/>
           <received>
-            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+            <message content="n005;n004n005" type="defender.advert" unique_id="3" from="n004"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;12"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n003;n003n005n004"/>
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n001;n001n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n001;n001n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n003"/>
+              <row content="n005;n001"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="8">
           <sent/>
           <received>
-            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+            <message content="n005;n004n005" type="defender.advert" unique_id="None" from="n004"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;12"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n003;n003n005n004"/>
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n001;n001n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n001;n001n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n003"/>
+              <row content="n005;n001"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="9">
-          <sent/>
+          <sent>
+            <message content="n005;n002n005" type="defender.advert" unique_id="19" to="n001" will_be_lost="0"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="20" to="n004" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="21" to="n005" will_be_lost="0"/>
+          </sent>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="20" from="n001"/>
+            <message content="n005;n001n003n005" type="defender.advert" unique_id="34" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;12"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n003;n003n005n004"/>
-              <row content="n003;n003;n003"/>
-              <row content="n004;n004;n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
-              <row content="n004"/>
-              <row content="n003"/>
               <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n003"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n003n005n004;20"/>
-              <row content="n004;n004;10"/>
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n001"/>
+          </content>
+        </state>
+        <state id="10">
+          <sent/>
+          <received>
+            <message content="n005;n001n003n005" type="defender.advert" unique_id="None" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n005"/>
+              <row content="n004"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n001n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
@@ -734,286 +1529,401 @@
           <sent/>
           <received/>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy">
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="1">
           <sent>
-            <message content="n003;n003" type="defender.advertise" unique_id="15" to="n005" will_be_lost="0"/>
-            <message content="n003;n003" type="defender.advertise" unique_id="16" to="n002" will_be_lost="0"/>
+            <message content="n003;n003" type="defender.advert" unique_id="22" to="n001" will_be_lost="0"/>
+            <message content="n003;n003" type="defender.advert" unique_id="23" to="n004" will_be_lost="0"/>
+            <message content="n003;n003" type="defender.advert" unique_id="24" to="n005" will_be_lost="0"/>
           </sent>
           <received>
             <message content="" type="defender.start" unique_id="None" from="admin"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="2">
           <sent/>
           <received>
-            <message content="n002;n002" type="defender.advertise" unique_id="7" from="n002"/>
+            <message content="n004;n004" type="defender.advert" unique_id="2" from="n004"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n004;n004"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n002;n002"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="3">
           <sent/>
           <received>
-            <message content="n005;n005" type="defender.advertise" unique_id="3" from="n005"/>
+            <message content="n001;n001" type="defender.advert" unique_id="30" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n001;n001"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n005;n005"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="4">
           <sent>
-            <message content="n004;n003n005n004" type="defender.advertise" unique_id="17" to="n002" will_be_lost="0"/>
-            <message content="n004" type="defender.withdraw" unique_id="18" to="n005" will_be_lost="0"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="25" to="n001" will_be_lost="0"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="26" to="n004" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="27" to="n005" will_be_lost="0"/>
           </sent>
-          <received/>
+          <received>
+            <message content="n005;n005" type="defender.advert" unique_id="9" from="n005"/>
+          </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n005"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="5">
           <sent/>
           <received>
-            <message content="n004;n005n004" type="defender.advertise" unique_id="4" from="n005"/>
+            <message content="n005;n001n005" type="defender.advert" unique_id="32" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n005"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="6">
           <sent/>
           <received>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="9" from="n002"/>
+            <message content="n005;n001n005" type="defender.advert" unique_id="None" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n004"/>
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="7">
           <sent/>
           <received>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="None" from="n002"/>
+            <message content="n005;n004n005" type="defender.advert" unique_id="4" from="n004"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n004"/>
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="8">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="14" from="n002"/>
+            <message content="n005;n004n005" type="defender.advert" unique_id="None" from="n004"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n004"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="9">
           <sent/>
           <received>
-            <message content="n004" type="defender.withdraw" unique_id="None" from="n002"/>
+            <message content="n005" type="defender.withdraw" unique_id="36" from="n001"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n005;n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in">
               <row content="n005;n005;n005"/>
-              <row content="n002;n002;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
-            </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
               <row content="n005"/>
-              <row content="n002"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n005"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n005n004;10"/>
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+          </content>
+        </state>
+        <state id="10">
+          <sent/>
+          <received>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n001"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;4"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n001"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n001"/>
+              <row content="n004"/>
+              <row content="n005"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n005"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n004n002n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
@@ -1025,279 +1935,493 @@
           <sent/>
           <received/>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy">
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy"/>
           </content>
         </state>
         <state id="1">
           <sent>
-            <message content="n001;n001" type="defender.advertise" unique_id="19" to="n002" will_be_lost="0"/>
+            <message content="n001;n001" type="defender.advert" unique_id="28" to="n002" will_be_lost="0"/>
+            <message content="n001;n001" type="defender.advert" unique_id="29" to="n005" will_be_lost="0"/>
+            <message content="n001;n001" type="defender.advert" unique_id="30" to="n003" will_be_lost="0"/>
           </sent>
           <received>
             <message content="" type="defender.start" unique_id="None" from="admin"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed"/>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="2">
           <sent/>
           <received>
-            <message content="n002;n002" type="defender.advertise" unique_id="8" from="n002"/>
+            <message content="n002;n002" type="defender.advert" unique_id="10" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n002;n002"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n002;n002;n002"/>
-            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
-            <table type="defender.route_updated">
-              <row content="n002;n002"/>
+          </content>
+        </state>
+        <state id="3">
+          <sent/>
+          <received>
+            <message content="n003;n003" type="defender.advert" unique_id="22" from="n003"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost"/>
+            <table type="defender.best_local_pref"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n003;n003"/>
+            </table>
+            <table type="defender.rib_in"/>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected"/>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop"/>
+            <table type="defender.policy">
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="4">
-          <sent/>
+          <sent>
+            <message content="n005;n001n005" type="defender.advert" unique_id="31" to="n002" will_be_lost="0"/>
+            <message content="n005;n001n005" type="defender.advert" unique_id="32" to="n003" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="33" to="n005" will_be_lost="0"/>
+          </sent>
           <received>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="10" from="n002"/>
+            <message content="n005;n005" type="defender.advert" unique_id="6" from="n005"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;4"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;10"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n005"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n005;n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n005"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="5">
-          <sent/>
+          <sent>
+            <message content="n005;n001n003n005" type="defender.advert" unique_id="34" to="n002" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="35" to="n005" will_be_lost="0"/>
+            <message content="n005" type="defender.withdraw" unique_id="36" to="n003" will_be_lost="0"/>
+          </sent>
           <received>
-            <message content="n004;n002n004" type="defender.advertise" unique_id="None" from="n002"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="25" from="n003"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="6">
           <sent/>
           <received>
-            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+            <message content="n005;n003n005" type="defender.advert" unique_id="None" from="n003"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;8"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n003"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;10"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="7">
-          <sent>
-            <message content="n004" type="defender.withdraw" unique_id="20" to="n002" will_be_lost="0"/>
-          </sent>
+          <sent/>
           <received>
-            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="12" from="n002"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="13" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;16"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n003n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="8">
           <sent/>
           <received>
-            <message content="n004;n002n003n005n004" type="defender.advertise" unique_id="None" from="n002"/>
+            <message content="n005;n002n005" type="defender.advert" unique_id="None" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;16"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n003n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
-            </table>
-            <table type="defender.route_updated">
-              <row content="n004;n002"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="9">
           <sent/>
           <received>
-            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+            <message content="n005" type="defender.withdraw" unique_id="17" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;16"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n003n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>
         <state id="10">
           <sent/>
           <received>
-            <message content="" type="defender.topology_change" unique_id="None" from="admin"/>
+            <message content="n005" type="defender.withdraw" unique_id="None" from="n002"/>
           </received>
           <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
             <table type="defender.best_cost">
-              <row content="n004;16"/>
+              <row content="n005;8"/>
             </table>
-            <table type="defender.best_candidate">
-              <row content="n004;n002n003n005n004"/>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
             </table>
-            <table type="defender.candidate">
-              <row content="n004;n002;n002n003n005n004"/>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
             </table>
-            <table type="defender.best_pref">
-              <row content="n004;20"/>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
             </table>
+            <table type="defender.cdel_policy"/>
             <table type="neighbour">
               <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
             </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
             <table type="defender.best_next_hop">
-              <row content="n004;n002"/>
+              <row content="n005;n003"/>
             </table>
             <table type="defender.policy">
-              <row content="n004;n002n004;10"/>
-              <row content="n004;n002n003n005n004;20"/>
-              <row content="n004;n004;3000"/>
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="11">
+          <sent/>
+          <received>
+            <message content="n005;n002n005" type="defender.advert" unique_id="19" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;8"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
+            </table>
+          </content>
+        </state>
+        <state id="12">
+          <sent/>
+          <received>
+            <message content="n005;n002n005" type="defender.advert" unique_id="None" from="n002"/>
+          </received>
+          <content>
+            <table type="defender.deleted"/>
+            <table type="defender.cdel_neighbour"/>
+            <table type="defender.best_cost">
+              <row content="n005;8"/>
+            </table>
+            <table type="defender.best_local_pref">
+              <row content="n005;20"/>
+            </table>
+            <table type="defender.cadd_neighbour"/>
+            <table type="defender.rib_in_changed">
+              <row content="n005;n002"/>
+            </table>
+            <table type="defender.rib_in">
+              <row content="n005;n005;n005"/>
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cdel_policy"/>
+            <table type="neighbour">
+              <row content="n002"/>
+              <row content="n005"/>
+              <row content="n003"/>
+            </table>
+            <table type="defender.rib_selected">
+              <row content="n005;n003;n003n005"/>
+            </table>
+            <table type="defender.cadd_policy"/>
+            <table type="defender.best_next_hop">
+              <row content="n005;n003"/>
+            </table>
+            <table type="defender.policy">
+              <row content="n003n005;20"/>
+              <row content="n005;10"/>
             </table>
           </content>
         </state>

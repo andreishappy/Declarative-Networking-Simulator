@@ -1,3 +1,5 @@
 neighbour(n002);
-policy(n004,n002n004,10);
-policy(n004,n002n003n005n004,20);
+neighbour(n005);
+neighbour(n003);
+cadd_policy(n003n005,20);
+cadd_policy(n005,10);

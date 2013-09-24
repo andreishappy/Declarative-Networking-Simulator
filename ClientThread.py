@@ -3,7 +3,7 @@ import threading
 import string
 from tools import andreadline,ClosedSocketException
 from HistoryObjects import Message,State
-
+import copy
 
 
 #TOOLS used by Client Thread
@@ -29,8 +29,7 @@ def tuples_to_list(input_list):
     
     return result
 
-def analyse_messages(raw_list, node_id, clas):
-    received = []
+def analyse_sent(raw_list, node_id, clas):
     sent = []
     
     cooked_list = tuples_to_list(raw_list)
@@ -42,16 +41,40 @@ def analyse_messages(raw_list, node_id, clas):
         timestamp = content_list[-1]
         content = content_list[2:-1]
 
+        #Take out all the received messages from here
         mess_object = Message(table_name,src,dst,timestamp,content)
         if src == node_id:
             sent.append(mess_object)
         elif dst == node_id:
+            pass
+        else:
+            print "This message should in {3}'s space: from {0} to {1} content {2}"\
+                  .format(src,dst,content,node_id)
+
+    return sent
+
+def analyse_received(raw_list, node_id, clas):
+    received = []
+    
+    cooked_list = tuples_to_list(raw_list)
+    for mess in cooked_list:
+        table_name = '{0}.{1}'.format(clas,mess[0])
+
+        content_list = mess[1]
+        src = content_list[1]
+        dst = content_list[0]
+        timestamp = content_list[-1]
+        content = content_list[2:-1]
+
+        #Take out all the received messages from here
+        mess_object = Message(table_name,src,dst,timestamp,content)
+        if dst == node_id:
             received.append(mess_object)
         else:
             print "This message should in {3}'s space: from {0} to {1} content {2}"\
                   .format(src,dst,content,node_id)
 
-    return received, sent
+    return received
 
 #INPUT: list of tuples as output by tuple_to_list
 #       [(name,[entries]),(name,[other_entries])]
@@ -88,7 +111,8 @@ def take_out_timestamp(dirty_state):
 def find_input_tuples(input_list):
     result = []
     input_list = tuples_to_list(input_list)
-    for inp in input_list:
+    for i in range(0,len(input_list)):
+        inp = input_list[i]
         table_name = inp[0]
         #Don't count he peers table as an input
         if table_name == 'peers':
@@ -124,38 +148,65 @@ class ClientThread(threading.Thread):
         try:
 
             while not self.stopped:
+                con = ''
                 if not first:
                     nodeid = andreadline(self.myfile)
 
+                    con += nodeid + '\n' #Debug
+
+
 
                 tmp = andreadline(self.myfile)
-
+                con += tmp + '\n'
                 tmp = string.split(tmp)
                 state_nr = int(tmp[0])
                 timestamp = tmp[1]
                 
                 received_count = int(andreadline(self.myfile))
+                
+
                 raw_received = []
                 for i in xrange(0,received_count):
-                    raw_received.append(andreadline(self.myfile))
+                    line = andreadline(self.myfile)
+                    raw_received.append(line)
+                    con += line + '\n'#Debug
 
                 input_tuples = find_input_tuples(raw_received)
     
                 state_count = int(andreadline(self.myfile))
+                con += str(state_count) + '\n' #debug
                 raw_state = []
                 for i in xrange(0,state_count):
-                    raw_state.append(andreadline(self.myfile))
-            
+                    line = andreadline(self.myfile)
+                    raw_state.append(line)
+                    con += line + '\n' #Debug
             #Get the state content dict
                 state_tables = make_tables(raw_state,self.clas)
 
                 sent_count = int(andreadline(self.myfile))
+                con += str(sent_count) + '\n' #Debug
                 raw_messages = []
                 for i in xrange(0,sent_count):
                     mess = andreadline(self.myfile)
+                    con += mess + '\n' #Debug
                     raw_messages.append(mess)
-            
-                (received,sent) = analyse_messages(raw_messages,self.node_id,self.clas)
+
+                #Pick up the triggers
+                trigger_count = int(andreadline(self.myfile))
+                triggers = []
+                con += str(trigger_count) + '\n'
+                for i in xrange(0,trigger_count):
+                    line = andreadline(self.myfile)
+                    triggers.append(line)
+#Need to process it now ADD LATER
+                    con += line + '\n'
+
+                print con
+                sent = analyse_sent(raw_messages,self.node_id,self.clas)
+                received = analyse_received(triggers,self.node_id,self.clas)
+                received_to_signal = copy.deepcopy(received)
+                #Throw away received from above
+                    
 
             #Turn input tuples into message objects
                 for inp in input_tuples:
@@ -179,12 +230,22 @@ class ClientThread(threading.Thread):
                         time.sleep(.2)
 
 
-                self.monitor.signal_evaluation()
+                        
+                self.monitor.signal_evaluation(received_to_signal,sent)
+                print "Sent"
+                for mess in sent:
+                    print mess
+
+                print "Received"
+                for mess in received:
+                    print mess
 
                 while self.monitor.hit_limit():
                     time.sleep(10)
 
-                time.sleep(1)
+                time.sleep(1.1)    
+                self.monitor.suspended_lock.acquire()
+            
                 self.monitor.send_changes(prev_state,state_nr)
                 print "Sending RESUME to node {0}".format(self.node_id)
                 

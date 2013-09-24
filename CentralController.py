@@ -86,15 +86,21 @@ class CentralController(threading.Thread):
                 node2 = node_list[1]
                 if typ == "sever_link":
                     dynamic_type = "delete"
+                    node1_change = DynamicChange(dynamic_type,node1,"cdel_neighbour({0});"\
+                                                 .format(node2),int(inp["delay"]))
+                
+                    node2_change = DynamicChange(dynamic_type,node2,"cdel_neighbour({0});"\
+                                                 .format(node1),int(inp["delay"]))
+
                 else:
                     dynamic_type = "add"
-                    
-                node1_change = DynamicChange(dynamic_type,node1,"neighbour({0});"\
-                                             .format(node2),int(inp["delay"]))
-                self.dynamic_changes[node1].append(node1_change) 
+                    node1_change = DynamicChange(dynamic_type,node1,"cadd_neighbour({0});"\
+                                                 .format(node2),int(inp["delay"]))
+                
+                    node2_change = DynamicChange(dynamic_type,node2,"cadd_neighbour({0});"\
+                                                 .format(node1),int(inp["delay"]))
 
-                node2_change = DynamicChange(dynamic_type,node2,"neighbour({0});"\
-                                             .format(node1),int(inp["delay"]))
+                self.dynamic_changes[node1].append(node1_change) 
                 self.dynamic_changes[node2].append(node2_change) 
 
             elif typ == "add" or typ == "delete":
@@ -149,11 +155,12 @@ class CentralController(threading.Thread):
         while not self.monitor.start_tuples_sent:
             time.sleep(.2)
 
+        start = time.time()
         print "CC: Starting to do Dynamic Changes"
         while there_exist(self.dynamic_changes):
             time.sleep(.3)
             to_do = {}
-            current_delay = time.time() - self.monitor.start_time
+            current_delay = time.time() - start
             for node in self.dynamic_changes:
                 dyn_list = self.dynamic_changes[node]
                 index = 0
@@ -172,16 +179,30 @@ class CentralController(threading.Thread):
                     index += 1
 
             messages = {}
+            with self.monitor.suspended_lock:
+                for node in to_do:
+                    print "CC: suspended node {0}".format(node)
+                    self.monitor.suspended_flags[node] = True
+            
+            #inserters = []    
             for node in to_do:
-                print "CC: suspended node {0}".format(node)
-                self.monitor.suspend(node)
-            for node in to_do:
-                #In case an engine is in limbo after a resume
                 self.insert_dummy(node)
+                '''
+                #In case an engine is in limbo after a resume
+                cmd = 'tuple insert andrei {0} topology_change dummy=1'.format(node)
+                ins = Inserter(cmd)
+                ins.start()
+                inserters.append(ins)
+                '''
                 mess = self.make_mess(to_do[node],node)
                 messages[node] = mess
-                print "DYNAMIC CHANGE message\n {0}".format(mess)
-
+                
+            '''
+            #Wait for the dummy to be inserted into all nodes
+            
+            for ins in inserters:
+                ins.join()
+                '''
             for node in to_do:
                 while not self.monitor.ready_for_change(node):
                     time.sleep(.2)
@@ -190,7 +211,9 @@ class CentralController(threading.Thread):
             for node in messages:
                 sock = self.node_to_socket[node]
                 sock.sendall(messages[node])
-
+                print "Just sent to node {0}:\n{1}".format(node,messages[node])
+                self.insert_dummy(node)            
+                
             for node in messages:
                 self.monitor.unsuspend(node)
 
@@ -206,7 +229,9 @@ class CentralController(threading.Thread):
         to_add = []
 
         for dyn in dyn_list:
-            if dyn.type == 'add':
+            if dyn.table_name == "cadd_neighbour" or dyn.table_name == 'cdel_neighbour':
+                to_add.append(dyn)
+            elif dyn.type == 'add':
                 to_add.append(dyn)
             elif dyn.type == 'delete':
                 to_delete.append(dyn)
@@ -220,17 +245,17 @@ class CentralController(threading.Thread):
             row_list = dyn.tuple
             
             #Now find the timestamp from the previous state if it exists 
-            relevant_table = self.monitor.last_state[node_id][table_name]
-            to_append = None
-            for state_row in relevant_table:
-                if matches(row_list,state_row):
-                    to_append = [longstamp(state_row[-1])]
+            #relevant_table = self.monitor.last_state[node_id][table_name]
+            #to_append = None
+            #for state_row in relevant_table:
+            #    if matches(row_list,state_row):
+            #        to_append = [longstamp(state_row[-1])]
 
-                else:
-                    continue
+            #    else:
+            #        continue
 
-            if not to_append:
-                to_append = ['100']
+            #if not to_append:
+            to_append = ['100']
             
             new_row_list = row_list + to_append
             to_send += '{0}({1});\n'.format(table_name,','.join(new_row_list))

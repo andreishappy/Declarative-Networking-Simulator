@@ -1,7 +1,8 @@
 import string
 import datetime
 import time
-
+from collections import OrderedDict
+import hashlib
 
 #Takes instance name at initialization
 class Message:
@@ -12,7 +13,7 @@ class Message:
         self.time = timestamp
         self.content = content
         self.will_be_lost = 1
-        self.unique_id = None
+        self.unique_id = -1
 
     def __str__(self):
         #If you want to see the full header
@@ -28,6 +29,14 @@ class Message:
                self.time == other.time and \
                self.content == other.content
 
+    def __hash__(self):
+        to_hash = "{0}{1}{2}{3}{4}"\
+                  .format(self.table_name,self.src,\
+                          self.dest,self.time,self.content)
+
+        result = hash(to_hash)
+        return result
+
 class State:
     def __init__(self,instance,state_nr,sent,received,state_tables):
         self.tables = []
@@ -39,7 +48,12 @@ class State:
         self.sent = sent
 
         #Dict of {table_name:[[row],[row],...],...}
-        self.state_tables = state_tables 
+        ordered = OrderedDict()
+        for table in sorted(state_tables.iterkeys()):
+           ordered[table] = sorted(state_tables[table],key=lambda x: x[0])
+
+
+        self.state_tables = ordered 
 
     def __str__(self):
         title = "State for {0} | NR. {1}:\n".format(self.instance,self.state_nr)
@@ -57,6 +71,10 @@ class State:
             title += '   ' + mess.__str__() + '\n'
 
         return title
+
+    def __hash__(self):
+        to_hash = self.state_tables.__str__()
+        return hash(to_hash)
             
 class Table:
 
@@ -77,6 +95,17 @@ class Table:
             result += row + '\n'
 
         return result
+
+
+class GlobalState:
+    def __init__(self,global_state_dict):
+        to_hash = ''
+        ordered = OrderedDict()
+        for node in sorted(global_state_dict.iterkeys()):
+            to_hash += node + '/'
+            state_obj = global_state_dict[node]
+            to_hash += hash(state_obj) + '//'
+        return hash(to_hash)
 
 #LOGGER TOOLS =====================================
 #Returns a list of the names of transport tables
@@ -322,7 +351,24 @@ def received_messages_to_list(line,state_nr):
 
 if __name__ == "__main__":
     
-    for mess in sent_message_to_list(st3,2):
-        print mess
+    mess1 = Message('hello','me','you',100203,['yo','you','ganster'])
+    mess2 = Message('hello','me','you',100203,['yo','yo','ganster'])
+
+    mess3 = Message('hello','me','you',100203,['yo','you','ganster'])
+    print hash(mess1) == hash(mess2)
+    print hash(mess1) == hash(mess3)
 
 
+    st1 = {'hello':[['he','is','a','bender'],['no','he','isnt','man']],\
+           'man': [['she','is','hot'],['for','real','dude']],\
+           'what': []}
+
+    state1 = State('n001',1,[],[],st1)
+
+    st2 = {'man': [['she','is','hot'],['for','real','dude']],\
+           'hello':[['he','is','a','bender'],['no','he','isnt','man']],\
+           'what': []}
+
+    state2 = State('n002',1,[],[],st2)
+
+    print hash(state1) == hash(state2)

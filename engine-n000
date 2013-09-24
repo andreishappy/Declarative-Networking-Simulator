@@ -1,0 +1,27 @@
+Watson Policy Management Library - Copyright IBM Corporation 2008,2012.
+Copyrights also by Apache Software Foundation (http://apache.org) and Antlr (http://antlr2.org)
+Distributed State Machine Toolkit - Copyright IBM Corporation 2011,2013.
+Copyrights also by Apache Software Foundation (http://apache.org) and Antlr (http://antlr3.org)
+Loading dsm properties from file:/homes/ap3012/individual_project/unzipped22/lib/dsm.properties
+Bad level value for property: sun.os.patch.level
+Bad level value for property: sun.os.patch.level
+Loading wpml properties from file:/homes/ap3012/individual_project/unzipped22/lib/wpml.properties
+Bad level value for property: sun.os.patch.level
+Bad level value for property: sun.os.patch.level
+Sep 20, 2013 2:37:14 PM java.lang.Thread.run(Thread.java:724) 
+INFO: Listening for serialized data on network://146.169.53.110:36942
+Bad level value for property: sun.os.patch.level
+Engine andrei/n000 started.
+Sep 20, 2013 2:37:18 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:59363 : Connection refused
+Sep 20, 2013 2:37:29 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:52624 : Connection refused
+Sep 20, 2013 2:37:29 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:40123 : Connection refused
+Sep 20, 2013 2:37:29 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:59363 : Connection refused
+Sep 20, 2013 2:37:29 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:60004 : Connection refused
+Sep 20, 2013 2:37:29 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
+WARNING: Could not send data to network://146.169.53.110:37436 : Connection refused
+/homes/ap3012/individual_project/unzipped22/bin/dsmrun: line 68:  8003 Killed                  java -Djava.library.path=$DSM_HOME/lib $sysProps $args

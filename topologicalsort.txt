@@ -1,0 +1,26 @@
+PLAN FOR TOPOLOGICAL SORT EXTENSION:
+     
+When a new state comes in, it is inserted in an ordered fashion.
+By that I mean that it's lamport clock is set to the appropriate
+value according to its trigger. 
+
+If the trigger has not been seen yet (sendind state not received yet),
+then we put it in a buffer.
+
+This buffer is checked every time a new state is inserted to see if 
+the newly inserted state is the trigger of any buffered states.
+
+
+After every insert, we look at the global state to find if there has 
+been a repetition. A global state is the last layer of the
+topologically sorted history. 
+
+This is achieved by inserting the global states into a hash-set (need
+to hash them). After every insert, check if the new global state is
+part of the hash-set.
+
+
+NEED TO LEARN:
+
+     - Hashing Python Objects - __hash__ function
+     - 

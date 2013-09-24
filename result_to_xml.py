@@ -39,10 +39,9 @@ def do_state_messages(mess_list,tag):
         #mess_elem.attrib['timestamp'] = str(mess.time)
         mess_elem.attrib['unique_id'] = str(mess.unique_id)
         if tag == 'sent':
-            mess_elem.attrib['to'] = mess.dest
             mess_elem.attrib['will_be_lost'] = str(mess.will_be_lost)
-        elif tag == 'received':
-            mess_elem.attrib['from'] = mess.src
+        mess_elem.attrib['to'] = mess.dest
+        mess_elem.attrib['from'] = mess.src
     return result
 
 def do_state_content(table_dic):

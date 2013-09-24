@@ -12,15 +12,20 @@ from result_to_xml import do_declarations,append_messages_lost,do_states
 #HELPER:Removes all messages received that were not from neighbours
 def clean_state(state):
     neighbours = []
-    n_list_of_lists = state.state_tables['neighbour']
-    for one_neighbour_list in n_list_of_lists:
-        neighbours.append(one_neighbour_list[0])
+    try:
+        n_list_of_lists = state.state_tables['neighbour']
+        for one_neighbour_list in n_list_of_lists:
+            neighbours.append(one_neighbour_list[0])
+    except KeyError:
+        pass
+    
     
     received = state.received
     index = 0
     while index < len(received):
         mess = received[index]
-        if mess.src not in neighbours:
+        if mess.src not in neighbours and mess.src != 'admin':
+            print "Removing Message {0}".format(received[index])
             del received[index]
         index += 1
 
@@ -92,13 +97,14 @@ class Simulator:
             node_id = node[0]
             rule = node[1]
             #make the file
-            filename = 'init{0}.dsmi'.format(node_id)
+            filename = '/homes/ap3012/individual_project/home/NewYork/init{0}.dsmi'.format(node_id)
             f = open(filename,'w')
             for neighbour in topology_map[node_id]:
                 f.write('neighbour({0});\n'.format(neighbour))
 
             try:
                 for inp in pre_input_map[node_id]:
+                    print "Inp {0}".format(inp)
                     table_name = inp['table_name']
                     for row in inp['rows']:
                         to_write = '{0}({1});\n'.format(table_name,row)
@@ -171,7 +177,8 @@ class Simulator:
         self.start_central_controller()
 
         self.start_engines()
-
+       
+        time.sleep(1)
         while not (self.monitor.hit_limit() or self.monitor.convergence_reached()):
             time.sleep(1)
 
@@ -189,13 +196,15 @@ class Simulator:
         #print "Before Lamport"
         #self.print_history()
 
-                #Put in all the tables that don't already exist in the history 
+        #Put in all the tables that don't already exist in the history 
         for node in self.history:
             clas = self.node_to_class[node]
             tables = self.table_templates[clas]
             table_names = []
             for table in tables:
-                table_names.append(table['name'])
+                table_name = table['name']
+                if table_name != 'neighbour':
+                    table_names.append('{0}.{1}'.format(clas,table['name']))
             state_list = self.history[node]
             for state in state_list:
                 for table_name in table_names:
@@ -208,7 +217,7 @@ class Simulator:
             for state in state_list:
                 clean_state(state)
     
-        self.lost_list, self.nr_received, self.nr_sent = lamport_transformation(self.history)
+        (self.lost_list, self.nr_received, self.nr_sent), self.evaluations = lamport_transformation(self.history)
         try:
             self.percentage_lost = float((self.nr_sent - self.nr_received))/self.nr_sent
         except ZeroDivisionError:
@@ -216,13 +225,46 @@ class Simulator:
             
         self.percentage_lost = round(self.percentage_lost * 100,1)
             #Get this from the monitor
-        self.evaluations = 0
         self.simulation_time = time.time() - start_time
         
+
         #print "After Lamport"
         #self.print_history()
         
         self.make_xml()
+        
+        f = open('experiment_data','a')
+        f.write('Transitions: {0} \n  Sent: {1}\n  Lost{2}'\
+                .format(self.evaluations,
+                        self.nr_sent,self.percentage_lost))
+        f.close()
+
+
+        
+
+    #Tests if the state which contain messages with a -1 unique
+    # id are identical to the ones before
+    def minus_one_test(self):
+        for node in self.history:
+            state_list = self.history[node]
+            prev = state_list[0]
+            for i in xrange(1,len(state_list)):
+                current = state_list[i]
+                for mess in current.received:
+                    if mess.unique_id == -1 and mess.src != "admin":
+                        
+                        if current.state_tables == prev.state_tables:
+                            print "Prev is the same"
+                        else:
+                            print "Prev is different"
+                            print "Comparing states: \n{0} \nAND\n{1}".format(prev,current)
+
+
+                        if current.received == prev.received:
+                            print "Trigger is the same as prev"
+                        else:
+                            print "Trigger is different to prev"
+                prev = state_list[i]
 
     def make_xml(self):
         result = Element('result')
@@ -242,7 +284,7 @@ class Simulator:
         result.append(messages_lost_elem)
 
         outcome_elem = Element('outcome')
-        outcome_elem.attrib['transitions'] = str(self.monitor.evaluations)
+        outcome_elem.attrib['transitions'] = str(self.evaluations)
         outcome_elem.attrib['time'] = str(int(self.simulation_time))
 
         outcome_elem.attrib['outcome'] = self.outcome
@@ -271,10 +313,12 @@ class Simulator:
 
 if __name__ == "__main__":
     #Add DSMEngine to the loadpath
-    os.environ['PATH'] += ':/homes/ap3012/individual_project/unzipped22/bin'
+    os.environ['PATH'] += ':/homes/ap3012/individual_project/unzipped23/bin'
     os.environ['PROJECT_HOME'] = '/homes/ap3012/individual_project/home'
-    os.environ['DSM_HOME'] = '/homes/ap3012/individual_project/unzipped22'
+    os.environ['DSM_HOME'] = '/homes/ap3012/individual_project/unzipped23'
     
+    print "DSM_HOME {0}".format(os.environ['DSM_HOME'])
+    print "PATH {0}".format(os.environ['PATH'])
     parser = OptionParser()
 
     (options,args) = parser.parse_args()

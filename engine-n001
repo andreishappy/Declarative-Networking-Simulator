@@ -2,122 +2,50 @@ Watson Policy Management Library - Copyright IBM Corporation 2008,2012.
 Copyrights also by Apache Software Foundation (http://apache.org) and Antlr (http://antlr2.org)
 Distributed State Machine Toolkit - Copyright IBM Corporation 2011,2013.
 Copyrights also by Apache Software Foundation (http://apache.org) and Antlr (http://antlr3.org)
-Loading dsm properties from file:/homes/ap3012/individual_project/unzipped22/lib/dsm.properties
+Loading dsm properties from file:/homes/ap3012/individual_project/unzipped23/lib/dsm.properties
 Bad level value for property: sun.os.patch.level
 Bad level value for property: sun.os.patch.level
-Loading wpml properties from file:/homes/ap3012/individual_project/unzipped22/lib/wpml.properties
+Loading wpml properties from file:/homes/ap3012/individual_project/unzipped23/lib/wpml.properties
 Bad level value for property: sun.os.patch.level
 Bad level value for property: sun.os.patch.level
-Sep 19, 2013 4:38:54 PM java.lang.Thread.run(Thread.java:724) 
-INFO: Listening for serialized data on network://146.169.53.110:60689
+Sep 24, 2013 4:22:23 PM java.lang.Thread.run(Thread.java:724) 
+INFO: Listening for serialized data on network://146.169.53.110:51816
 Bad level value for property: sun.os.patch.level
 Engine andrei/n001 started.
-Sep 19, 2013 4:39:00 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:00 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:00 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:00 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:00 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:03 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:05 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:05 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:06 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:06 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:39094 : Connection refused
-Sep 19, 2013 4:39:06 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:06 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:06 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:40037 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:39094 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:08 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:40037 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36441 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:39094 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:09 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36441 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:39094 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:40037 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:10 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:35471 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:49275 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:47448 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:34366 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:40037 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36441 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:39094 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:37822 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:57794 : Connection refused
-Sep 19, 2013 4:39:24 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:768) 
-WARNING: Could not send data to network://146.169.53.110:36901 : Connection refused
-/homes/ap3012/individual_project/unzipped22/bin/dsmrun: line 68:  2273 Killed                  java -Djava.library.path=$DSM_HOME/lib $sysProps $args
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:51704 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:54431 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:51704 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:27 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:44722 : Connection refused
+Sep 24, 2013 4:22:38 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:54431 : Connection refused
+Sep 24, 2013 4:22:38 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:51704 : Connection refused
+Sep 24, 2013 4:22:38 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:38 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:40585 : Connection refused
+Sep 24, 2013 4:22:38 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:44722 : Connection refused
+Sep 24, 2013 4:22:53 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:54431 : Connection refused
+Sep 24, 2013 4:22:53 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:51704 : Connection refused
+Sep 24, 2013 4:22:53 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:50614 : Connection refused
+Sep 24, 2013 4:22:53 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:40585 : Connection refused
+Sep 24, 2013 4:22:53 PM com.ibm.watson.dsm.platform.AbstractSharedDataPlatform.sendMessage(AbstractSharedDataPlatform.java:766) 
+WARNING: Could not send data to network://146.169.53.110:44722 : Connection refused
+/homes/ap3012/individual_project/dsm/bin/dsmrun: line 68: 20654 Killed                  java -Djava.library.path=$DSM_HOME/lib $sysProps $args

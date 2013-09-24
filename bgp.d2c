@@ -1,0 +1,129 @@
+//Declarations
+//========================
+system peers(char[128] node, char[64] relationship);
+
+input start(int dummy);
+input add_neighbour(char[128] neighbour);
+input del_neighbour(char[128] neighbour);
+persistent cdel_neighbour(char[128] neighbour);
+persistent cadd_neighbour(char[128] neighbour);
+input topology_change(int dummy);
+input add_policy(char[128] path, int pref);
+input del_policy(char[128] path);
+persistent cadd_policy(char[128] path, int pref);
+persistent cdel_policy(char[128] path);
+
+transport advert(char[128] Dest, char[128] Path);
+transport withdraw(char[128] Dest);
+
+persistent neighbour(char[128] neighbour);
+persistent policy(char[128] Dest, int Pref);
+persistent rib_in_changed(char[128] Dest, char[128] NextHop);
+persistent rib_in(char[128] Dest, char[128] NextHop, char[128] Path);
+persistent best_local_pref(char[128] Dest, int LocalPref);
+persistent best_cost(char[128] Dest, int Path);
+persistent best_next_hop(char[128] Dest, char[128] NextHop);
+persistent rib_selected(char[128] Dest, char[128] NextHop, char[128] Path);
+
+persistent deleted(char[128] deleted);
+
+//Rules
+//=======================
+//Normal Inertia Rule:
+//neighbour(Peer) if prev neighbour(Peer), not del_neighbour(Peer);
+//neighbour(Peer) if add_neighbour(Peer);
+
+//Added for CHANGESTATE
+neighbour(Peer) if prev neighbour(Peer), not prev cdel_neighbour(Peer);
+neighbour(Peer) if prev cadd_neighbour(Peer);
+
+//policy(Path, Pref) if prev policy(Path, Pref), not del_policy(Path);
+//policy(Path, Pref) if add_policy(Path, Pref);
+//Added for CHANGESTATE
+policy(Path, Pref) if prev cadd_policy(Path, Pref);
+policy(Path, Pref) if prev policy(Path, Pref), not prev cdel_policy(Path);
+
+
+rib_in_changed(Dest, NextHop) if
+	advert(Dest, *)@NextHop,
+	neighbour(NextHop);
+
+rib_in_changed(Dest, NextHop) if
+	withdraw(Dest)@NextHop,
+	neighbour(NextHop);
+
+block;
+
+rib_in(Dest, NextHop, Path) if
+	prev rib_in(Dest, NextHop, Path),
+	not rib_in_changed(Dest, NextHop),
+	neighbour(NextHop); // Bug to show
+
+rib_in(Dest, NextHop, Path) if
+	advert(Dest, Path)@NextHop,
+	neighbour(NextHop),
+	policy(Path, *);
+
+block;
+
+best_local_pref(Dest, MAX(LocalPref)) if
+	rib_in(Dest, *, Path),
+	policy(Path, LocalPref);
+
+block;
+
+best_cost(Dest, MIN(LENGTH(Path))) if 
+     best_local_pref(Dest,Pref),
+     rib_in(Dest,*,Path),
+     policy(Path,Pref);
+
+block;
+
+best_next_hop(Dest, MIN(NextHop)) if
+	best_local_pref(Dest, LocalPref),
+	best_cost(Dest, Cost),
+	rib_in(Dest, NextHop, Path),
+	policy(Path, LocalPref):
+	LENGTH(Path) == Cost;
+
+block;
+
+rib_selected(Dest, NextHop, Path) if
+	best_next_hop(Dest, NextHop),
+	rib_in(Dest, NextHop, Path);
+
+
+advert(Self, Self)@Peer if //added for start tuple 
+	peers(Self,"Self"),
+	neighbour(Peer),
+	start(*);
+
+
+advert(Self, Self)@Peer if
+	peers(Self,"Self"),
+	add_neighbour(Peer);
+
+advert(Self, Self)@Peer if
+	peers(Self,"Self"),
+	prev cadd_neighbour(Peer);
+
+advert(Dest, Self+Path)@Peer if
+	rib_selected(Dest, NextHop, Path),
+	not prev rib_selected(Dest, NextHop, Path),
+	peers(Self,"Self"),
+	neighbour(Peer):
+	LOCATE(Peer,Path) == 0;
+
+withdraw(Dest)@Peer if
+	prev rib_selected(Dest, *, *),
+	not rib_in(Dest, *, *),
+	neighbour(Peer);
+
+withdraw(Dest)@Peer if
+	rib_selected(Dest, NextHop, Path),
+	not prev rib_selected(Dest, NextHop, Path),
+	peers(Self,"Self"),
+	neighbour(Peer):
+	LOCATE(Peer, Path) != 0;
+
+	
