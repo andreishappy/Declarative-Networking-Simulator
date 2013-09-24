@@ -8,7 +8,9 @@ import os, time, subprocess
 import tools, socket
 from lxml.etree import *
 from result_to_xml import do_declarations,append_messages_lost,do_states
-
+from HistoryObjects import Message, State, Table, GlobalState
+import pickle
+from cycle_detection import detect_cycle
 #HELPER:Removes all messages received that were not from neighbours
 def clean_state(state):
     neighbours = []
@@ -231,6 +233,8 @@ class Simulator:
         #print "After Lamport"
         #self.print_history()
         
+
+        self.history_to_file()
         self.make_xml()
         
         f = open('experiment_data','a')
@@ -239,33 +243,11 @@ class Simulator:
                         self.nr_sent,self.percentage_lost))
         f.close()
 
-
+    def history_to_file(self):
+        f = open('/homes/ap3012/individual_project/home/NewYork/history_pickle','w')
+        pickle.dump(self.history,f)
+        f.close()
         
-
-    #Tests if the state which contain messages with a -1 unique
-    # id are identical to the ones before
-    def minus_one_test(self):
-        for node in self.history:
-            state_list = self.history[node]
-            prev = state_list[0]
-            for i in xrange(1,len(state_list)):
-                current = state_list[i]
-                for mess in current.received:
-                    if mess.unique_id == -1 and mess.src != "admin":
-                        
-                        if current.state_tables == prev.state_tables:
-                            print "Prev is the same"
-                        else:
-                            print "Prev is different"
-                            print "Comparing states: \n{0} \nAND\n{1}".format(prev,current)
-
-
-                        if current.received == prev.received:
-                            print "Trigger is the same as prev"
-                        else:
-                            print "Trigger is different to prev"
-                prev = state_list[i]
-
     def make_xml(self):
         result = Element('result')
         #Get info about the declarations at the start
@@ -290,7 +272,16 @@ class Simulator:
         outcome_elem.attrib['outcome'] = self.outcome
         result.append(outcome_elem)
         
-
+        cycle_elem = Element('cycle')
+        cycle_result = detect_cycle(self.history)
+        if cycle_result:
+            cycle_elem.attrib['cycle'] = '1'
+            cycle_elem.attrib['start'] = str(cycle_result[0])
+            cycle_elem.attrib['end'] = str(cycle_result[1])
+        else:
+            cycle_elem.attrib['cycle'] = '0'
+                                
+        result.append(cycle_elem)
 
 
         

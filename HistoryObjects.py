@@ -98,14 +98,34 @@ class Table:
 
 
 class GlobalState:
-    def __init__(self,global_state_dict):
-        to_hash = ''
+    def __init__(self,dic):
+        print "Initializing a global state with {0}".format(dic)
         ordered = OrderedDict()
-        for node in sorted(global_state_dict.iterkeys()):
+        for node in sorted(dic.iterkeys()):
+            ordered[node] = dic[node]
+
+        self.states = ordered
+
+    def __hash__(self):
+        to_hash = ''
+        for node in self.states:
             to_hash += node + '/'
-            state_obj = global_state_dict[node]
-            to_hash += hash(state_obj) + '//'
+            state_obj = self.states[node]
+            to_hash += str(hash(state_obj)) + '//'
+        print "Trying to hash: {0}".format(to_hash)
         return hash(to_hash)
+
+    def __str__(self):
+        to_return = 'Global State \n'
+        for node in self.states:
+            to_return += '   {0}\n'.format(node)
+            state = self.states[node]
+            to_return += '     {0}\n'.format(state)
+
+        return to_return
+
+    def __eq__(self,other):
+        return self.states == other.states
 
 #LOGGER TOOLS =====================================
 #Returns a list of the names of transport tables
