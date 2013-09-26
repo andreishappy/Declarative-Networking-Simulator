@@ -180,7 +180,7 @@ class Simulator:
 
         self.start_engines()
        
-        time.sleep(1)
+        time.sleep(5)
         while not (self.monitor.hit_limit() or self.monitor.convergence_reached()):
             time.sleep(1)
 
@@ -207,11 +207,17 @@ class Simulator:
                 table_name = table['name']
                 if table_name != 'neighbour':
                     table_names.append('{0}.{1}'.format(clas,table['name']))
+                table_names.append('neighbour')
+
             state_list = self.history[node]
             for state in state_list:
                 for table_name in table_names:
                     if table_name not in state.state_tables:
-                        state.state_tables[table_name] = []
+                        if table_name not in ['cadd_neighbour',\
+                                              'cdel_neighbour',\
+                                              'cadd_policy',\
+                                              'cdel_policy']:
+                            state.state_tables[table_name] = []
 
         #Remove all the messages received from nodes that weren't neighbours
         for node in self.history:
@@ -265,19 +271,31 @@ class Simulator:
         append_messages_lost(messages_lost_elem,self.lost_list)
         result.append(messages_lost_elem)
 
+        cycle_result = detect_cycle(self.history)
+        if cycle_result:
+            start = str(cycle_result[0])
+            end = str(cycle_result[1])
+
         outcome_elem = Element('outcome')
         outcome_elem.attrib['transitions'] = str(self.evaluations)
         outcome_elem.attrib['time'] = str(int(self.simulation_time))
 
-        outcome_elem.attrib['outcome'] = self.outcome
+        if self.outcome == "Converged":
+            outcome_elem.attrib['outcome'] = "Converged"
+        elif self.outcome == "Hit Limit":
+            if not cycle_result:
+                outcome_elem.attrib['outcome'] = "Hit Limit"
+            else:
+                outcome_elem.attrib['outcome'] = "Cycle ({0} - {1})".format(start,end)
+        
         result.append(outcome_elem)
         
         cycle_elem = Element('cycle')
-        cycle_result = detect_cycle(self.history)
+        
         if cycle_result:
             cycle_elem.attrib['cycle'] = '1'
-            cycle_elem.attrib['start'] = str(cycle_result[0])
-            cycle_elem.attrib['end'] = str(cycle_result[1])
+            cycle_elem.attrib['start'] = start
+            cycle_elem.attrib['end'] = end
         else:
             cycle_elem.attrib['cycle'] = '0'
                                 

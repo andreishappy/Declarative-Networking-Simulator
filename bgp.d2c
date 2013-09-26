@@ -25,7 +25,6 @@ persistent best_cost(char[128] Dest, int Path);
 persistent best_next_hop(char[128] Dest, char[128] NextHop);
 persistent rib_selected(char[128] Dest, char[128] NextHop, char[128] Path);
 
-persistent deleted(char[128] deleted);
 
 //Rules
 //=======================

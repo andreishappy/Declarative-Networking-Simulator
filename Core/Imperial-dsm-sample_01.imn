@@ -1,0 +1,160 @@
+node n1 {
+    type router
+    model host
+    network-config {
+	hostname n1
+	!
+	interface eth0
+	 ip address 10.0.0.10/24
+	 ipv6 address 2001:0::10/64
+	!
+    }
+    canvas c1
+    iconcoords {216.0 120.0}
+    labelcoords {216.0 152.0}
+    interface-peer {eth0 n6}
+}
+
+node n2 {
+    type router
+    model host
+    network-config {
+	hostname n2
+	!
+	interface eth0
+	 ip address 10.0.0.11/24
+	 ipv6 address 2001:0::11/64
+	!
+    }
+    canvas c1
+    iconcoords {550.0 122.0}
+    labelcoords {550.0 154.0}
+    interface-peer {eth0 n6}
+}
+
+node n3 {
+    type router
+    model host
+    network-config {
+	hostname n3
+	!
+	interface eth0
+	 ip address 10.0.0.12/24
+	 ipv6 address 2001:0::12/64
+	!
+    }
+    canvas c1
+    iconcoords {553.0 457.0}
+    labelcoords {553.0 489.0}
+    interface-peer {eth0 n6}
+}
+
+node n4 {
+    type router
+    model host
+    network-config {
+	hostname n4
+	!
+	interface eth0
+	 ip address 10.0.0.13/24
+	 ipv6 address 2001:0::13/64
+	!
+    }
+    canvas c1
+    iconcoords {387.0 290.0}
+    labelcoords {387.0 322.0}
+    interface-peer {eth0 n6}
+}
+
+node n5 {
+    type router
+    model host
+    network-config {
+	hostname n5
+	!
+	interface eth0
+	 ip address 10.0.0.14/24
+	 ipv6 address 2001:0::14/64
+	!
+    }
+    canvas c1
+    iconcoords {216.0 456.0}
+    labelcoords {216.0 488.0}
+    interface-peer {eth0 n6}
+}
+
+node n6 {
+    type wlan
+    network-config {
+	hostname wlan6
+	!
+	interface wireless
+	 ip address 10.0.0.0/24
+	 ipv6 address 2001:0::0/64
+	!
+	mobmodel
+	coreapi
+	basic_range
+	!
+    }
+    custom-config {
+	custom-config-id basic_range
+	custom-command {3 3 9 9 9}
+	config {
+	range=375.0
+	bandwidth=54000000
+	jitter=0
+	delay=20000
+	error=0
+	}
+    }
+    canvas c1
+    iconcoords {68.0 601.0}
+    labelcoords {68.0 633.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n4}
+    interface-peer {e4 n5}
+}
+
+link l1 {
+    nodes {n6 n1}
+}
+
+link l2 {
+    nodes {n6 n2}
+}
+
+link l3 {
+    nodes {n6 n3}
+}
+
+link l4 {
+    nodes {n6 n4}
+}
+
+link l5 {
+    nodes {n6 n5}
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses no
+    node_labels yes
+    link_labels yes
+    show_api yes
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+
+option session {
+}
+

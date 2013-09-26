@@ -34,23 +34,36 @@ def detect_cycle(history):
     cycle_dict = {}
 
     for i in range(0,max_state_nr):
-        print 'Getting global state for clock {0}'.format(i)
+        #print 'Getting global state for clock {0}'.format(i)
         global_state = get_global_state(history,i)
-        print 'Global State is: {0}'.format(global_state)
+        #print 'Global State is: {0}'.format(global_state)
         hashed = hash(global_state)
-        print "STATE HASHED TO {0}".format(hashed)
+        #print "STATE HASHED TO {0}".format(hashed)
         if hashed not in cycle_dict:
             print "Inserting the global state in the cycle_dict"
-            cycle_dict[hashed] = (global_state, i)
+            cycle_dict[hashed] = [(global_state, i)]
         else:
-            start = cycle_dict[hashed][1]
-            first_state = cycle_dict[hashed][0]
-            end = i
-            return (start,end)#If you want more,(first_state,global_state)
+            #start = cycle_dict[hashed][1]
+            #first_state = cycle_dict[hashed][0]
+            #end = i
+            #return (start,end)#If you want more,(first_state,global_state)
+            cycle_dict[hashed].append((global_state, i))
 
-    return False
+    result = None
+    latest = 0
+    for cycle in cycle_dict.values():
+        if len(cycle) > 1:
+            print cycle
+            tup1 = cycle[-1]
+            tup2 = cycle[-2]
+            end = tup1[1]
+            start = tup2[1]
+            if end > latest:
+                latest = end
+                result = (start,end)
 
-        
+
+    return result
        
       
 if __name__ == "__main__":

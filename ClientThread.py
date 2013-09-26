@@ -258,6 +258,9 @@ class ClientThread(threading.Thread):
         except ClosedSocketException:
             pass
             
+        except socket.error:
+            print "Socket closed before client died"
+            pass
     
 if __name__ == "__main__":
     tuples = []
